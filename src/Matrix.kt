@@ -29,9 +29,7 @@ class Matrix(val elements: Array<Array<Double>>): MatrixType {
     operator fun times(other: Matrix): Matrix {
         val rows = elements.size
         val columns = other.numberOfColumns
-        val multiplied = Array<Array<Double>>(rows, {
-            i -> Array<Double>(columns, { j -> 0.0 })
-        })
+        val multiplied = Array(rows, { Array(columns, { 0.0 }) })
         for (row in 0 until rows) {
             for (column in 0 until columns) {
                 for (i in 0 until numberOfColumns) {
