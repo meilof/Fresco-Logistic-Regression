@@ -33,4 +33,18 @@ class MatrixSpec : Spek({
         expect(transposed.element(0, 1)).to.equal(matrix.element(1, 0))
         expect(transposed.element(1, 2)).to.equal(matrix.element(2, 1))
     }
+
+    it("can be multiplied with another matrix") {
+        val otherMatrix = Matrix(arrayOf(
+                arrayOf(10.0, 20.0, 30.0),
+                arrayOf(40.0, 50.0, 60.0)
+        ))
+        val multiplied = matrix.multiply(otherMatrix)
+        expect(multiplied.element(0, 0)).to.equal(90.0)
+        expect(multiplied.element(0, 1)).to.equal(120.0)
+        expect(multiplied.element(0, 2)).to.equal(150.0)
+        expect(multiplied.element(1, 1)).to.equal(260.0)
+        expect(multiplied.element(2, 2)).to.equal(510.0)
+
+    }
 })
