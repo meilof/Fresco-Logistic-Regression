@@ -1,10 +1,12 @@
 interface MatrixType {
+    val numberOfColumns: Int
+    val numberOfRows: Int
     operator fun get(row: Int, column: Int): Double
 }
 
 class Matrix(val elements: Array<Array<Double>>): MatrixType {
-    val numberOfColumns: Int
-    val numberOfRows: Int
+    override val numberOfColumns: Int
+    override val numberOfRows: Int
 
     init {
         var numberOfColumns: Int? = null
@@ -50,12 +52,20 @@ class Matrix(val elements: Array<Array<Double>>): MatrixType {
 }
 
 class TransposedMatrix(val matrix: MatrixType): MatrixType {
+    override val numberOfRows: Int
+        get() = matrix.numberOfColumns
+    override val numberOfColumns: Int
+        get() = matrix.numberOfRows
     override operator fun get(row: Int, column: Int): Double {
         return matrix[column, row]
     }
 }
 
 class MultipliedMatrix(val matrix: MatrixType, val scalar: Double): MatrixType {
+    override val numberOfRows: Int
+        get() = matrix.numberOfRows
+    override val numberOfColumns: Int
+        get() = matrix.numberOfColumns
     override operator fun get(row: Int, column: Int): Double {
         return matrix[row, column] * scalar
     }
