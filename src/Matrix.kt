@@ -26,7 +26,7 @@ class Matrix(val elements: Array<Array<Double>>): MatrixType {
         return TransposedMatrix(this)
     }
 
-    fun multiply(other: Matrix): Matrix {
+    operator fun times(other: Matrix): Matrix {
         val rows = elements.size
         val columns = other.numberOfColumns
         val multiplied = Array<Array<Double>>(rows, {
