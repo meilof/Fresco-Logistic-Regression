@@ -1,5 +1,5 @@
 interface MatrixType {
-    operator fun get(row: Int, column: Int): Double?
+    operator fun get(row: Int, column: Int): Double
 }
 
 class Matrix(val elements: Array<Array<Double>>): MatrixType {
@@ -41,10 +41,24 @@ class Matrix(val elements: Array<Array<Double>>): MatrixType {
 
         return Matrix(multiplied)
     }
+
+    operator fun times(scalar: Double): MatrixType {
+        return MultipliedMatrix(this, scalar)
+    }
 }
 
 class TransposedMatrix(val matrix: MatrixType): MatrixType {
-    override operator fun get(row: Int, column: Int): Double? {
+    override operator fun get(row: Int, column: Int): Double {
         return matrix[column, row]
     }
+}
+
+class MultipliedMatrix(val matrix: MatrixType, val scalar: Double): MatrixType {
+    override operator fun get(row: Int, column: Int): Double {
+        return matrix[row, column] * scalar
+    }
+}
+
+operator fun Double.times(matrix: Matrix): MatrixType {
+    return matrix * this
 }

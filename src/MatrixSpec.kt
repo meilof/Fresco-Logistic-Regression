@@ -45,6 +45,17 @@ class MatrixSpec : Spek({
         expect(multiplied[0, 2]).to.equal(150.0)
         expect(multiplied[1, 1]).to.equal(260.0)
         expect(multiplied[2, 2]).to.equal(510.0)
+    }
 
+    it("can be multiplied by a scalar postfix") {
+        val multiplied = matrix * 3.0
+        expect(multiplied[0, 0]).to.equal(3.0)
+        expect(multiplied[2, 1]).to.equal(18.0)
+    }
+
+    it("can be multiplied by a scalar prefix") {
+        val multiplied = 3.0 * matrix
+        expect(multiplied[0, 0]).to.equal(3.0)
+        expect(multiplied[2, 1]).to.equal(18.0)
     }
 })
