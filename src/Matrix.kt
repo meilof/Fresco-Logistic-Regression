@@ -1,5 +1,5 @@
 interface MatrixType {
-    fun element(row: Int, column: Int): Double?
+    operator fun get(row: Int, column: Int): Double?
 }
 
 class Matrix(val elements: Array<Array<Double>>): MatrixType {
@@ -18,7 +18,7 @@ class Matrix(val elements: Array<Array<Double>>): MatrixType {
         this.numberOfColumns = numberOfColumns ?: 0
     }
 
-    override fun element(row: Int, column: Int): Double {
+    override operator fun get(row: Int, column: Int): Double {
         return elements[row][column]
     }
 
@@ -36,7 +36,7 @@ class Matrix(val elements: Array<Array<Double>>): MatrixType {
             for (column in 0 until columns) {
                 for (i in 0 until numberOfColumns) {
                     multiplied[row][column] +=
-                            this.element(row, i) * other.element(i, column)
+                            this[row, i] * other[i, column]
                 }
             }
         }
@@ -46,7 +46,7 @@ class Matrix(val elements: Array<Array<Double>>): MatrixType {
 }
 
 class TransposedMatrix(val matrix: MatrixType): MatrixType {
-    override fun element(row: Int, column: Int): Double? {
-        return matrix.element(row = column, column = row)
+    override operator fun get(row: Int, column: Int): Double? {
+        return matrix[column, row]
     }
 }

@@ -11,8 +11,8 @@ class MatrixSpec : Spek({
     ))
 
     it("can recall its elements") {
-        expect(matrix.element(row = 0, column = 0)).to.equal(1.0)
-        expect(matrix.element(row = 2, column = 1)).to.equal(6.0)
+        expect(matrix[0, 0]).to.equal(1.0)
+        expect(matrix[2, 1]).to.equal(6.0)
     }
 
     it("does not tolerate differing row sizes") {
@@ -29,9 +29,9 @@ class MatrixSpec : Spek({
 
     it("can be transposed") {
         val transposed = matrix.transpose()
-        expect(transposed.element(0, 0)).to.equal(matrix.element(0, 0))
-        expect(transposed.element(0, 1)).to.equal(matrix.element(1, 0))
-        expect(transposed.element(1, 2)).to.equal(matrix.element(2, 1))
+        expect(transposed[0, 0]).to.equal(matrix[0, 0])
+        expect(transposed[0, 1]).to.equal(matrix[1, 0])
+        expect(transposed[1, 2]).to.equal(matrix[2, 1])
     }
 
     it("can be multiplied with another matrix") {
@@ -40,11 +40,11 @@ class MatrixSpec : Spek({
                 arrayOf(40.0, 50.0, 60.0)
         ))
         val multiplied = matrix * otherMatrix
-        expect(multiplied.element(0, 0)).to.equal(90.0)
-        expect(multiplied.element(0, 1)).to.equal(120.0)
-        expect(multiplied.element(0, 2)).to.equal(150.0)
-        expect(multiplied.element(1, 1)).to.equal(260.0)
-        expect(multiplied.element(2, 2)).to.equal(510.0)
+        expect(multiplied[0, 0]).to.equal(90.0)
+        expect(multiplied[0, 1]).to.equal(120.0)
+        expect(multiplied[0, 2]).to.equal(150.0)
+        expect(multiplied[1, 1]).to.equal(260.0)
+        expect(multiplied[2, 2]).to.equal(510.0)
 
     }
 })
