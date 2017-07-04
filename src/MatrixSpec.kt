@@ -1,6 +1,6 @@
+import com.winterbe.expekt.expect
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.it
-import org.junit.Assert.*
 
 class MatrixSpec : Spek({
     val matrix: Matrix<Double> = Matrix(arrayOf(
@@ -10,7 +10,7 @@ class MatrixSpec : Spek({
     ))
 
     it("can recall its elements") {
-        assertEquals(1.0, matrix.element(row = 0, column = 0))
-        assertEquals(6.0, matrix.element(row = 2, column = 1))
+        expect(matrix.element(row = 0, column = 0)).to.equal(1.0)
+        expect(matrix.element(row = 2, column = 1)).to.equal(6.0)
     }
 })
