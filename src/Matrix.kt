@@ -8,7 +8,7 @@ interface MatrixType {
         return TransposedMatrix(this)
     }
 
-    operator fun times(other: Matrix): Matrix {
+    operator fun times(other: MatrixType): MatrixType {
         val rows = numberOfRows
         val columns = other.numberOfColumns
         val multiplied = Array(rows, { Array(columns, { 0.0 }) })
@@ -72,6 +72,6 @@ class MultipliedMatrix(val matrix: MatrixType, val scalar: Double): MatrixType {
     }
 }
 
-operator fun Double.times(matrix: Matrix): MatrixType {
+operator fun Double.times(matrix: MatrixType): MatrixType {
     return matrix * this
 }
