@@ -15,5 +15,6 @@
     <orderEntry type="library" name="org.opentest4j:opentest4j:1.0.0-M2" level="project" />
     <orderEntry type="library" name="org.junit.jupiter:junit-jupiter-api:5.0.0-M4" level="project" />
     <orderEntry type="library" name="org.junit.platform:junit-platform-commons:1.0.0-M4" level="project" />
+    <orderEntry type="library" name="com.winterbe:expekt:0.5.0" level="project" />
   </component>
 </module>
