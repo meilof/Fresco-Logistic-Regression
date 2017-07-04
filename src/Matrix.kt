@@ -1,8 +1,8 @@
-interface MatrixType {
-    val numberOfColumns: Int
-    val numberOfRows: Int
+abstract class MatrixType {
+    abstract val numberOfColumns: Int
+    abstract val numberOfRows: Int
 
-    operator fun get(row: Int, column: Int): Double
+    abstract operator fun get(row: Int, column: Int): Double
 
     fun transpose(): MatrixType {
         return TransposedMatrix(this)
@@ -27,9 +27,30 @@ interface MatrixType {
     operator fun times(scalar: Double): MatrixType {
         return MultipliedMatrix(this, scalar)
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is MatrixType) return false
+        if (numberOfRows != other.numberOfRows) return false
+        if (numberOfColumns != other.numberOfColumns) return false
+        for (row in 0 until numberOfRows) {
+            @Suppress("LoopToCallChain")
+            for (column in 0 until numberOfColumns) {
+                if (this[row, column] != other[row, column]) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = numberOfColumns
+        result = 31 * result + numberOfRows
+        return result
+    }
 }
 
-class Matrix(val elements: Array<Array<Double>>): MatrixType {
+class Matrix(val elements: Array<Array<Double>>): MatrixType() {
     override val numberOfColumns: Int
     override val numberOfRows: Int
 
@@ -52,7 +73,7 @@ class Matrix(val elements: Array<Array<Double>>): MatrixType {
     }
 }
 
-class TransposedMatrix(val matrix: MatrixType): MatrixType {
+class TransposedMatrix(val matrix: MatrixType): MatrixType() {
     override val numberOfRows: Int
         get() = matrix.numberOfColumns
     override val numberOfColumns: Int
@@ -62,7 +83,7 @@ class TransposedMatrix(val matrix: MatrixType): MatrixType {
     }
 }
 
-class MultipliedMatrix(val matrix: MatrixType, val scalar: Double): MatrixType {
+class MultipliedMatrix(val matrix: MatrixType, val scalar: Double): MatrixType() {
     override val numberOfRows: Int
         get() = matrix.numberOfRows
     override val numberOfColumns: Int
