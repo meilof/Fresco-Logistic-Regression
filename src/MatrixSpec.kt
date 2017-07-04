@@ -26,4 +26,11 @@ class MatrixSpec : Spek({
             // success
         }
     }
+
+    it("can be transposed") {
+        val transposed = matrix.transpose()
+        expect(transposed.element(0, 0)).to.equal(matrix.element(0, 0))
+        expect(transposed.element(0, 1)).to.equal(matrix.element(1, 0))
+        expect(transposed.element(1, 2)).to.equal(matrix.element(2, 1))
+    }
 })

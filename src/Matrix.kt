@@ -1,4 +1,8 @@
-class Matrix<T>(val elements: Array<Array<T>>) {
+interface MatrixType<T> {
+    fun element(row: Int, column: Int): T?
+}
+
+class Matrix<T>(val elements: Array<Array<T>>): MatrixType<T> {
     init {
         var numberOfColumns: Int? = null
         elements.forEach { element ->
@@ -11,7 +15,17 @@ class Matrix<T>(val elements: Array<Array<T>>) {
         }
     }
 
-    fun element(row: Int, column: Int): T? {
+    override fun element(row: Int, column: Int): T? {
         return elements[row][column]
+    }
+
+    fun transpose(): MatrixType<T> {
+        return TransposedMatrix(this)
+    }
+}
+
+class TransposedMatrix<T>(val matrix: MatrixType<T>): MatrixType<T> {
+    override fun element(row: Int, column: Int): T? {
+        return matrix.element(row = column, column = row)
     }
 }
