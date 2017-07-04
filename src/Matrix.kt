@@ -4,6 +4,7 @@ interface MatrixType {
 
 class Matrix(val elements: Array<Array<Double>>): MatrixType {
     val numberOfColumns: Int
+    val numberOfRows: Int
 
     init {
         var numberOfColumns: Int? = null
@@ -16,6 +17,7 @@ class Matrix(val elements: Array<Array<Double>>): MatrixType {
             }
         }
         this.numberOfColumns = numberOfColumns ?: 0
+        this.numberOfRows = elements.size
     }
 
     override operator fun get(row: Int, column: Int): Double {

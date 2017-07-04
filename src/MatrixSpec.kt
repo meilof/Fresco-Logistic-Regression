@@ -15,6 +15,11 @@ class MatrixSpec : Spek({
         expect(matrix[2, 1]).to.equal(6.0)
     }
 
+    it("knows its number of rows and columns") {
+        expect(matrix.numberOfRows).to.equal(3)
+        expect(matrix.numberOfColumns).to.equal(2)
+    }
+
     it("does not tolerate differing row sizes") {
         try {
             Matrix(arrayOf(
