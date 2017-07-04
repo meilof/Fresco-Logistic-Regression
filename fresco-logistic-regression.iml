@@ -8,5 +8,12 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
+    <orderEntry type="library" name="org.jetbrains.spek:spek-api:1.1.2" level="project" />
+    <orderEntry type="library" name="junit:junit:4.12" level="project" />
+    <orderEntry type="library" name="org.jetbrains.spek:spek-junit-platform-engine:1.1.2" level="project" />
+    <orderEntry type="library" name="org.junit.platform:junit-platform-launcher:1.0.0-M4" level="project" />
+    <orderEntry type="library" name="org.opentest4j:opentest4j:1.0.0-M2" level="project" />
+    <orderEntry type="library" name="org.junit.jupiter:junit-jupiter-api:5.0.0-M4" level="project" />
+    <orderEntry type="library" name="org.junit.platform:junit-platform-commons:1.0.0-M4" level="project" />
   </component>
 </module>
