@@ -1,7 +1,32 @@
 interface MatrixType {
     val numberOfColumns: Int
     val numberOfRows: Int
+
     operator fun get(row: Int, column: Int): Double
+
+    fun transpose(): MatrixType {
+        return TransposedMatrix(this)
+    }
+
+    operator fun times(other: Matrix): Matrix {
+        val rows = numberOfRows
+        val columns = other.numberOfColumns
+        val multiplied = Array(rows, { Array(columns, { 0.0 }) })
+        for (row in 0 until rows) {
+            for (column in 0 until columns) {
+                for (i in 0 until numberOfColumns) {
+                    multiplied[row][column] +=
+                            this[row, i] * other[i, column]
+                }
+            }
+        }
+
+        return Matrix(multiplied)
+    }
+
+    operator fun times(scalar: Double): MatrixType {
+        return MultipliedMatrix(this, scalar)
+    }
 }
 
 class Matrix(val elements: Array<Array<Double>>): MatrixType {
@@ -24,30 +49,6 @@ class Matrix(val elements: Array<Array<Double>>): MatrixType {
 
     override operator fun get(row: Int, column: Int): Double {
         return elements[row][column]
-    }
-
-    fun transpose(): MatrixType {
-        return TransposedMatrix(this)
-    }
-
-    operator fun times(other: Matrix): Matrix {
-        val rows = elements.size
-        val columns = other.numberOfColumns
-        val multiplied = Array(rows, { Array(columns, { 0.0 }) })
-        for (row in 0 until rows) {
-            for (column in 0 until columns) {
-                for (i in 0 until numberOfColumns) {
-                    multiplied[row][column] +=
-                            this[row, i] * other[i, column]
-                }
-            }
-        }
-
-        return Matrix(multiplied)
-    }
-
-    operator fun times(scalar: Double): MatrixType {
-        return MultipliedMatrix(this, scalar)
     }
 }
 
