@@ -3,7 +3,7 @@ import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.it
 
 class MatrixSpec : Spek({
-    val matrix: Matrix<Double> = Matrix(arrayOf(
+    val matrix = Matrix(arrayOf(
             arrayOf(1.0, 2.0),
             arrayOf(3.0, 4.0),
             arrayOf(5.0, 6.0)
