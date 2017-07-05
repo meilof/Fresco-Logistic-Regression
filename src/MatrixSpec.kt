@@ -1,8 +1,9 @@
 import com.winterbe.expekt.expect
 import org.jetbrains.spek.api.Spek
+import org.jetbrains.spek.api.dsl.context
+import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.junit.Assert.fail
-import java.lang.Math.sqrt
 
 class MatrixSpec : Spek({
     val matrix = Matrix(arrayOf(
@@ -63,5 +64,43 @@ class MatrixSpec : Spek({
         val multiplied = 3.0 * matrix
         expect(multiplied[0, 0]).to.equal(3.0)
         expect(multiplied[2, 1]).to.equal(18.0)
+    }
+
+    context("when transposing a lower triangular matrix") {
+        val transposed = LowerTriangularMatrix(Matrix(arrayOf(
+                arrayOf(1.0, 0.0),
+                arrayOf(2.0, 1.0)
+        ))).transpose()
+
+        it("returns an upper triangular matrix") {
+            expect(transposed as? UpperTriangularMatrix).to.not.be.`null`
+        }
+
+        it("returns the correct matrix") {
+            val expected = UpperTriangularMatrix(Matrix(arrayOf(
+                    arrayOf(1.0, 2.0),
+                    arrayOf(0.0, 1.0)
+            )))
+            expect(transposed).to.equal(expected)
+        }
+    }
+
+    context("when transposing an upper triangular matrix") {
+        val transposed = UpperTriangularMatrix(Matrix(arrayOf(
+                arrayOf(1.0, 2.0),
+                arrayOf(0.0, 1.0)
+        ))).transpose()
+
+        it("returns a lower triangular matrix") {
+            expect(transposed as? LowerTriangularMatrix).to.not.be.`null`
+        }
+
+        it("returns the correct matrix") {
+            val expected = LowerTriangularMatrix(Matrix(arrayOf(
+                    arrayOf(1.0, 0.0),
+                    arrayOf(2.0, 1.0)
+            )))
+            expect(transposed).to.equal(expected)
+        }
     }
 })

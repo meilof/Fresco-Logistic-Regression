@@ -4,7 +4,7 @@ abstract class MatrixType {
 
     abstract operator fun get(row: Int, column: Int): Double
 
-    fun transpose(): MatrixType {
+    open fun transpose(): MatrixType {
         return TransposedMatrix(this)
     }
 
@@ -121,6 +121,9 @@ class LowerTriangularMatrix(val matrix: MatrixType): MatrixType() {
             return matrix[row, column]
         }
     }
+    override fun transpose(): UpperTriangularMatrix {
+        return UpperTriangularMatrix(super.transpose())
+    }
 }
 
 class UpperTriangularMatrix(val matrix: MatrixType): MatrixType() {
@@ -134,6 +137,10 @@ class UpperTriangularMatrix(val matrix: MatrixType): MatrixType() {
         } else {
             return matrix[row, column]
         }
+    }
+
+    override fun transpose(): LowerTriangularMatrix {
+        return LowerTriangularMatrix(super.transpose())
     }
 }
 
