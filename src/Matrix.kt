@@ -1,5 +1,3 @@
-import java.lang.Math.sqrt
-
 abstract class MatrixType {
     abstract val numberOfColumns: Int
     abstract val numberOfRows: Int
@@ -28,25 +26,6 @@ abstract class MatrixType {
 
     operator fun times(scalar: Double): MatrixType {
         return MultipliedMatrix(this, scalar)
-    }
-
-    fun choleskyDecomposition(): MatrixType {
-        val d = numberOfRows
-        val a = Array(d, {
-            row -> Array(d, { column -> this[row, column] })
-        })
-        for (j in 0 until d) {
-            for (k in 0 until j) {
-                for (i in j until d) {
-                    a[i][j] -= a[i][k] * a[j][k]
-                }
-            }
-            a[j][j] = sqrt(a[j][j])
-            for (k in j + 1 until d) {
-                a[k][j] /= a[j][j]
-            }
-        }
-        return UpperTriangularMatrix(Matrix(a))
     }
 
     override fun equals(other: Any?): Boolean {
