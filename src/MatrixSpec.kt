@@ -2,6 +2,7 @@ import com.winterbe.expekt.expect
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.it
 import org.junit.Assert.fail
+import java.lang.Math.sqrt
 
 class MatrixSpec : Spek({
     val matrix = Matrix(arrayOf(
@@ -62,5 +63,17 @@ class MatrixSpec : Spek({
         val multiplied = 3.0 * matrix
         expect(multiplied[0, 0]).to.equal(3.0)
         expect(multiplied[2, 1]).to.equal(18.0)
+    }
+
+    it("can calculate the Cholesky decomposition") {
+        val square = Matrix(arrayOf(
+                arrayOf(2.0, 1.0),
+                arrayOf(1.0, 2.0)
+        ))
+        val expected = Matrix(arrayOf(
+                arrayOf(sqrt(2.0), 1.0/sqrt(2.0)),
+                arrayOf(0.0, sqrt(3.0/2.0))
+        ))
+        expect(square.choleskyDecomposition()).to.equal(expected)
     }
 })

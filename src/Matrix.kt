@@ -1,3 +1,5 @@
+import java.lang.Math.sqrt
+
 abstract class MatrixType {
     abstract val numberOfColumns: Int
     abstract val numberOfRows: Int
@@ -28,6 +30,25 @@ abstract class MatrixType {
         return MultipliedMatrix(this, scalar)
     }
 
+    fun choleskyDecomposition(): MatrixType {
+        val d = numberOfRows
+        val a = Array(d, {
+            row -> Array(d, { column -> this[row, column] })
+        })
+        for (j in 0 until d) {
+            for (k in 0 until j) {
+                for (i in j until d) {
+                    a[i][j] -= a[i][k] * a[j][k]
+                }
+            }
+            a[j][j] = sqrt(a[j][j])
+            for (k in j + 1 until d) {
+                a[k][j] /= a[j][j]
+            }
+        }
+        return UpperTriangularMatrix(Matrix(a))
+    }
+
     override fun equals(other: Any?): Boolean {
         if (other !is MatrixType) return false
         if (numberOfRows != other.numberOfRows) return false
@@ -46,6 +67,22 @@ abstract class MatrixType {
     override fun hashCode(): Int {
         var result = numberOfColumns
         result = 31 * result + numberOfRows
+        return result
+    }
+
+    override fun toString(): String {
+        var result = ""
+        for (row in 0 until numberOfRows) {
+            if (row != 0) {
+                result += "\n"
+            }
+            for (column in 0 until numberOfColumns) {
+                if (column != 0) {
+                    result += ", "
+                }
+                result += this[row, column]
+            }
+        }
         return result
     }
 }
@@ -90,6 +127,20 @@ class MultipliedMatrix(val matrix: MatrixType, val scalar: Double): MatrixType()
         get() = matrix.numberOfColumns
     override operator fun get(row: Int, column: Int): Double {
         return matrix[row, column] * scalar
+    }
+}
+
+class UpperTriangularMatrix(val matrix: MatrixType): MatrixType() {
+    override val numberOfRows: Int
+        get() = matrix.numberOfColumns
+    override val numberOfColumns: Int
+        get() = matrix.numberOfRows
+    override operator fun get(row: Int, column: Int): Double {
+        if (column < row) {
+            return 0.0
+        } else {
+            return matrix[column, row]
+        }
     }
 }
 
