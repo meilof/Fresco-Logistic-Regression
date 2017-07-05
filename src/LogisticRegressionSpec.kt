@@ -50,4 +50,24 @@ class LogisticRegressionSpec: Spek({
         val x = logistic.forwardSubstitution(L, b)
         expect(x).to.equal(expected)
     }
+
+    it("performs back substitution") {
+        val U = UpperTriangularMatrix(Matrix(arrayOf(
+                arrayOf(1.0, -2.0, 1.0),
+                arrayOf(0.0, 1.0, 6.0),
+                arrayOf(0.0, 0.0, 1.0)
+        )))
+        val b = Matrix(arrayOf(
+                arrayOf(4.0),
+                arrayOf(-1.0),
+                arrayOf(2.0)
+        ))
+        val expected = Matrix(arrayOf(
+                arrayOf(-24.0),
+                arrayOf(-13.0),
+                arrayOf(2.0)
+        ))
+        val x = logistic.backSubstitution(U, b)
+        expect(x).to.equal(expected)
+    }
 })
