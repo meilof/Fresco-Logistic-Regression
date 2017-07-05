@@ -3,7 +3,7 @@ class LogisticRegression {
         return -0.25 * (matrix.transpose() * matrix)
     }
 
-    fun choleskyDecomposition(matrix: MatrixType): MatrixType {
+    fun choleskyDecomposition(matrix: MatrixType): LowerTriangularMatrix {
         val d = matrix.numberOfRows
         val a = Array(d, {
             row -> Array(d, { column -> matrix[row, column] })
@@ -19,6 +19,6 @@ class LogisticRegression {
                 a[k][j] /= a[j][j]
             }
         }
-        return UpperTriangularMatrix(Matrix(a))
+        return LowerTriangularMatrix(Matrix(a))
     }
 }

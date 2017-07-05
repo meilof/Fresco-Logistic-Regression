@@ -109,16 +109,16 @@ class MultipliedMatrix(val matrix: MatrixType, val scalar: Double): MatrixType()
     }
 }
 
-class UpperTriangularMatrix(val matrix: MatrixType): MatrixType() {
+class LowerTriangularMatrix(val matrix: MatrixType): MatrixType() {
     override val numberOfRows: Int
         get() = matrix.numberOfColumns
     override val numberOfColumns: Int
         get() = matrix.numberOfRows
     override operator fun get(row: Int, column: Int): Double {
-        if (column < row) {
+        if (column > row) {
             return 0.0
         } else {
-            return matrix[column, row]
+            return matrix[row, column]
         }
     }
 }

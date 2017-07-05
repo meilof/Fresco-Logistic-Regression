@@ -24,10 +24,10 @@ class LogisticRegressionSpec: Spek({
                 arrayOf(2.0, 1.0),
                 arrayOf(1.0, 2.0)
         ))
-        val expected = Matrix(arrayOf(
-                arrayOf(Math.sqrt(2.0), 1.0/ Math.sqrt(2.0)),
-                arrayOf(0.0, Math.sqrt(3.0 / 2.0))
-        ))
+        val expected = LowerTriangularMatrix(Matrix(arrayOf(
+                arrayOf(Math.sqrt(2.0), 0.0),
+                arrayOf(1.0/ Math.sqrt(2.0), Math.sqrt(3.0 / 2.0))
+        )))
         expect(logistic.choleskyDecomposition(matrix)).to.equal(expected)
     }
 })
