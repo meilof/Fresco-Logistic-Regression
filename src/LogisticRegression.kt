@@ -21,4 +21,23 @@ class LogisticRegression {
         }
         return LowerTriangularMatrix(Matrix(a))
     }
+
+    /**
+     * Calculates the solution for the equation Lx=b,
+     * using forward substitution.
+     *
+     * See also https://en.wikipedia.org/wiki/Triangular_matrix#Algorithm
+     */
+    fun forwardSubstitution(L: LowerTriangularMatrix, b: MatrixType): MatrixType {
+        val n = b.numberOfRows
+        val y = Array(n, { row -> arrayOf(0.0) })
+        for (i in  0 until n) {
+            y[i][0] = b[i, 0]
+            for (j in 0 until i) {
+                y[i][0] -= L[i, j] * y[j][0]
+            }
+            y[i][0] /= L[i, i]
+        }
+        return Matrix(y)
+    }
 }
