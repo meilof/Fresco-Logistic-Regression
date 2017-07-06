@@ -28,6 +28,10 @@ abstract class MatrixType {
         return MultipliedMatrix(this, scalar)
     }
 
+    operator fun minus(other: MatrixType): MatrixType {
+        return SubtractedMatrix(this, other)
+    }
+
     override fun equals(other: Any?): Boolean {
         if (other !is MatrixType) return false
         if (numberOfRows != other.numberOfRows) return false
@@ -111,9 +115,9 @@ class MultipliedMatrix(val matrix: MatrixType, val scalar: Double): MatrixType()
 
 class LowerTriangularMatrix(val matrix: MatrixType): MatrixType() {
     override val numberOfRows: Int
-        get() = matrix.numberOfColumns
-    override val numberOfColumns: Int
         get() = matrix.numberOfRows
+    override val numberOfColumns: Int
+        get() = matrix.numberOfColumns
     override operator fun get(row: Int, column: Int): Double {
         if (column > row) {
             return 0.0
@@ -128,9 +132,9 @@ class LowerTriangularMatrix(val matrix: MatrixType): MatrixType() {
 
 class UpperTriangularMatrix(val matrix: MatrixType): MatrixType() {
     override val numberOfRows: Int
-        get() = matrix.numberOfColumns
-    override val numberOfColumns: Int
         get() = matrix.numberOfRows
+    override val numberOfColumns: Int
+        get() = matrix.numberOfColumns
     override operator fun get(row: Int, column: Int): Double {
         if (column < row) {
             return 0.0
@@ -141,6 +145,16 @@ class UpperTriangularMatrix(val matrix: MatrixType): MatrixType() {
 
     override fun transpose(): LowerTriangularMatrix {
         return LowerTriangularMatrix(super.transpose())
+    }
+}
+
+class SubtractedMatrix(val left: MatrixType, val right: MatrixType): MatrixType() {
+    override val numberOfRows: Int
+        get() = left.numberOfRows
+    override val numberOfColumns: Int
+        get() = left.numberOfColumns
+    override operator fun get(row: Int, column: Int): Double {
+        return left[row, column] - right[row, column]
     }
 }
 
