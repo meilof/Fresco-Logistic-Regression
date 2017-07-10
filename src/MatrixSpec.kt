@@ -170,4 +170,19 @@ class MatrixSpec : Spek({
             }
         }
     }
+
+    it("can determine whether it is close to another matrix") {
+        val closeMatrix = Matrix(arrayOf(
+                arrayOf(1.25, 2.0),
+                arrayOf(3.0, 4.0),
+                arrayOf(5.0, 6.0)
+        ))
+        val notCloseMatrix = Matrix(arrayOf(
+                arrayOf(1.3, 2.0),
+                arrayOf(3.0, 4.0),
+                arrayOf(5.0, 6.0)
+        ))
+        expect(matrix.isCloseTo(closeMatrix, 0.25)).to.be.`true`
+        expect(matrix.isCloseTo(notCloseMatrix, 0.25)).to.be.`false`
+    }
 })

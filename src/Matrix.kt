@@ -51,6 +51,17 @@ abstract class MatrixType {
         return true
     }
 
+    fun isCloseTo(other: MatrixType, delta: Double): Boolean {
+        for (row in 0 until numberOfRows) {
+            for (column in 0 until numberOfColumns) {
+                if (Math.abs(this[row, column] - other[row, column]) > delta) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
     override fun hashCode(): Int {
         var result = numberOfColumns
         result = 31 * result + numberOfRows
