@@ -9,7 +9,7 @@ abstract class MatrixType {
         for (column in 0 until numberOfColumns) {
             row[0][column] = get(index, column)
         }
-        return Matrix(row)
+        return Matrix(row).transpose()
     }
 
     open fun transpose(): MatrixType {

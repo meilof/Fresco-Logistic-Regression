@@ -47,7 +47,8 @@ class MatrixSpec : Spek({
         ))
         val firstRow = matrix.row(0)
         val expected = Matrix(arrayOf(
-                arrayOf(1.0, 2.0)
+                arrayOf(1.0),
+                arrayOf(2.0)
         ))
         expect(firstRow).to.equal(expected)
     }
