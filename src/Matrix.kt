@@ -4,6 +4,14 @@ abstract class MatrixType {
 
     abstract operator fun get(row: Int, column: Int): Double
 
+    fun row(index: Int): MatrixType {
+        val row = Array(1, { Array(numberOfColumns, { 0.0 }) })
+        for (column in 0 until numberOfColumns) {
+            row[0][column] = get(index, column)
+        }
+        return Matrix(row)
+    }
+
     open fun transpose(): MatrixType {
         return TransposedMatrix(this)
     }

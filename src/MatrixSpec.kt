@@ -40,6 +40,18 @@ class MatrixSpec : Spek({
         expect(transposed[1, 2]).to.equal(matrix[2, 1])
     }
 
+    it("can return a row") {
+        val matrix = Matrix(arrayOf(
+                arrayOf(1.0, 2.0),
+                arrayOf(3.0, 4.0)
+        ))
+        val firstRow = matrix.row(0)
+        val expected = Matrix(arrayOf(
+                arrayOf(1.0, 2.0)
+        ))
+        expect(firstRow).to.equal(expected)
+    }
+
     it("can be multiplied with another matrix") {
         val otherMatrix = Matrix(arrayOf(
                 arrayOf(10.0, 20.0, 30.0),
