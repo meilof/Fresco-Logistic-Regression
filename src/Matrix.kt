@@ -5,11 +5,11 @@ abstract class MatrixType {
     abstract operator fun get(row: Int, column: Int): Double
 
     fun row(index: Int): MatrixType {
-        val row = Array(1, { Array(numberOfColumns, { 0.0 }) })
+        val row = DoubleArray(numberOfColumns, { 0.0 })
         for (column in 0 until numberOfColumns) {
-            row[0][column] = get(index, column)
+            row[column] = get(index, column)
         }
-        return Matrix(row).transpose()
+        return Vector(*row).transpose()
     }
 
     open fun transpose(): MatrixType {
@@ -29,7 +29,7 @@ abstract class MatrixType {
             }
         }
 
-        return Matrix(multiplied)
+        return Matrix(*multiplied)
     }
 
     operator fun times(scalar: Double): MatrixType {
@@ -93,7 +93,7 @@ abstract class MatrixType {
     }
 }
 
-class Matrix(val elements: Array<Array<Double>>): MatrixType() {
+class Matrix(vararg val elements: Array<Double>): MatrixType() {
     override val numberOfColumns: Int
     override val numberOfRows: Int
 
@@ -228,5 +228,5 @@ fun logLikelyhoodPrime(
                     ) * x[i,k]
         }
     }
-    return Matrix(result)
+    return Matrix(*result)
 }

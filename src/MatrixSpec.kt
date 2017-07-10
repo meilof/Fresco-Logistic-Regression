@@ -6,11 +6,11 @@ import org.jetbrains.spek.api.dsl.it
 import org.junit.Assert.fail
 
 class MatrixSpec : Spek({
-    val matrix = Matrix(arrayOf(
+    val matrix = Matrix(
             arrayOf(1.0, 2.0),
             arrayOf(3.0, 4.0),
             arrayOf(5.0, 6.0)
-    ))
+    )
 
     it("can recall its elements") {
         expect(matrix[0, 0]).to.equal(1.0)
@@ -24,10 +24,10 @@ class MatrixSpec : Spek({
 
     it("does not tolerate differing row sizes") {
         try {
-            Matrix(arrayOf(
+            Matrix(
                     arrayOf(1.0, 2.0),
                     arrayOf(3.0, 4.0, 5.0)
-            ))
+            )
             fail()
         } catch (exception: IllegalArgumentException) {
             // success
@@ -51,23 +51,23 @@ class MatrixSpec : Spek({
     }
 
     it("can return a row") {
-        val matrix = Matrix(arrayOf(
+        val matrix = Matrix(
                 arrayOf(1.0, 2.0),
                 arrayOf(3.0, 4.0)
-        ))
+        )
         val firstRow = matrix.row(0)
-        val expected = Matrix(arrayOf(
+        val expected = Matrix(
                 arrayOf(1.0),
                 arrayOf(2.0)
-        ))
+        )
         expect(firstRow).to.equal(expected)
     }
 
     it("can be multiplied with another matrix") {
-        val otherMatrix = Matrix(arrayOf(
+        val otherMatrix = Matrix(
                 arrayOf(10.0, 20.0, 30.0),
                 arrayOf(40.0, 50.0, 60.0)
-        ))
+        )
         val multiplied = matrix * otherMatrix
         expect(multiplied[0, 0]).to.equal(90.0)
         expect(multiplied[0, 1]).to.equal(120.0)
@@ -89,67 +89,67 @@ class MatrixSpec : Spek({
     }
 
     it("can subtract matrices") {
-        val toBeSubtracted = Matrix(arrayOf(
+        val toBeSubtracted = Matrix(
                 arrayOf(2.0, 4.0),
                 arrayOf(6.0, 8.0),
                 arrayOf(10.0, 12.0)
-        ))
-        val expected = Matrix(arrayOf(
+        )
+        val expected = Matrix(
                 arrayOf(-1.0, -2.0),
                 arrayOf(-3.0, -4.0),
                 arrayOf(-5.0, -6.0)
-        ))
+        )
         expect(matrix - toBeSubtracted).to.equal(expected)
     }
 
     it("can add matrices") {
-        val toBeAdded= Matrix(arrayOf(
+        val toBeAdded= Matrix(
                 arrayOf(2.0, 4.0),
                 arrayOf(6.0, 8.0),
                 arrayOf(10.0, 12.0)
-        ))
-        val expected = Matrix(arrayOf(
+        )
+        val expected = Matrix(
                 arrayOf(3.0, 6.0),
                 arrayOf(9.0, 12.0),
                 arrayOf(15.0, 18.0)
-        ))
+        )
         expect(matrix + toBeAdded).to.equal(expected)
     }
 
     context("when transposing a lower triangular matrix") {
-        val transposed = LowerTriangularMatrix(Matrix(arrayOf(
+        val transposed = LowerTriangularMatrix(Matrix(
                 arrayOf(1.0, 0.0),
                 arrayOf(2.0, 1.0)
-        ))).transpose()
+        )).transpose()
 
         it("returns an upper triangular matrix") {
             expect(transposed as? UpperTriangularMatrix).to.not.be.`null`
         }
 
         it("returns the correct matrix") {
-            val expected = UpperTriangularMatrix(Matrix(arrayOf(
+            val expected = UpperTriangularMatrix(Matrix(
                     arrayOf(1.0, 2.0),
                     arrayOf(0.0, 1.0)
-            )))
+            ))
             expect(transposed).to.equal(expected)
         }
     }
 
     context("when transposing an upper triangular matrix") {
-        val transposed = UpperTriangularMatrix(Matrix(arrayOf(
+        val transposed = UpperTriangularMatrix(Matrix(
                 arrayOf(1.0, 2.0),
                 arrayOf(0.0, 1.0)
-        ))).transpose()
+        )).transpose()
 
         it("returns a lower triangular matrix") {
             expect(transposed as? LowerTriangularMatrix).to.not.be.`null`
         }
 
         it("returns the correct matrix") {
-            val expected = LowerTriangularMatrix(Matrix(arrayOf(
+            val expected = LowerTriangularMatrix(Matrix(
                     arrayOf(1.0, 0.0),
                     arrayOf(2.0, 1.0)
-            )))
+            ))
             expect(transposed).to.equal(expected)
         }
     }
@@ -176,10 +176,10 @@ class MatrixSpec : Spek({
 
             it("throws on matrices") {
                 val xi =
-                        Matrix(arrayOf(
+                        Matrix(
                                 arrayOf(1.0, 2.0),
                                 arrayOf(1.0, 2.0)
-                        ))
+                        )
                 val beta = Vector(0.1, 0.2).transpose()
                 try {
                     likelihood(xi, beta)
@@ -191,10 +191,10 @@ class MatrixSpec : Spek({
         }
 
         it("computes first derivative of log likelihood") {
-            val x = Matrix(arrayOf(
+            val x = Matrix(
                     arrayOf(1.0, 2.0, 3.0, 4.0),
                     arrayOf(1.1, 2.2, 3.3, 4.4)
-            ))
+            )
             val y = Vector(0.0, 1.0).transpose()
             val beta = Vector(0.1, 0.2, 0.3, 0.4).transpose()
             val result = logLikelyhoodPrime(x, y, beta)
@@ -204,16 +204,16 @@ class MatrixSpec : Spek({
     }
 
     it("can determine whether it is close to another matrix") {
-        val closeMatrix = Matrix(arrayOf(
+        val closeMatrix = Matrix(
                 arrayOf(1.25, 2.0),
                 arrayOf(3.0, 4.0),
                 arrayOf(5.0, 6.0)
-        ))
-        val notCloseMatrix = Matrix(arrayOf(
+        )
+        val notCloseMatrix = Matrix(
                 arrayOf(1.3, 2.0),
                 arrayOf(3.0, 4.0),
                 arrayOf(5.0, 6.0)
-        ))
+        )
         expect(matrix.isCloseTo(closeMatrix, 0.25)).to.be.`true`
         expect(matrix.isCloseTo(notCloseMatrix, 0.25)).to.be.`false`
     }

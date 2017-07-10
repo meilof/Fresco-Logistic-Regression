@@ -19,7 +19,7 @@ class LogisticRegression {
                 a[k][j] /= a[j][j]
             }
         }
-        return LowerTriangularMatrix(Matrix(a))
+        return LowerTriangularMatrix(Matrix(*a))
     }
 
     /**
@@ -38,7 +38,7 @@ class LogisticRegression {
             }
             y[i][0] /= L[i, i]
         }
-        return Matrix(y)
+        return Matrix(*y)
     }
 
     /**
@@ -57,7 +57,7 @@ class LogisticRegression {
             }
             x[i][0] /= U[i, i]
         }
-        return Matrix(x)
+        return Matrix(*x)
     }
 
     fun updateLearnedModel(H: MatrixType, beta: MatrixType, l: MatrixType): MatrixType {
