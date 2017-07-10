@@ -60,6 +60,31 @@ class LogisticRegression {
         return Matrix(*x)
     }
 
+    fun likelihood(v1: MatrixType, v2: MatrixType): Double {
+        if (v1.numberOfRows != v2.numberOfRows) {
+            throw IllegalArgumentException("vectors have different number" +
+                    " of elements")
+        }
+        if (v1.numberOfColumns != 1 || v2.numberOfColumns != 1) {
+            throw IllegalArgumentException("input must be vectors")
+        }
+        val exponential = exp(- v1.transpose().times(v2).get(0, 0))
+        return 1.0 / (1.0 + exponential)
+    }
+
+    fun logLikelyhoodPrime(
+            x: MatrixType, y: MatrixType, beta: MatrixType): MatrixType {
+        val result = Array(beta.numberOfRows, { Array(1, { 0.0 }) })
+        for (k in 0 until beta.numberOfRows) {
+            for (i in 0 until x.numberOfRows) {
+                result[k][0] += (
+                        y[i,0] - likelihood(x.row(i), beta)
+                        ) * x[i,k]
+            }
+        }
+        return Matrix(*result)
+    }
+
     fun updateLearnedModel(H: MatrixType, beta: MatrixType, l: MatrixType): MatrixType {
         val L = choleskyDecomposition(-1.0 * H)
         val y = forwardSubstitution(L, l)

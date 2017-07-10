@@ -1,6 +1,9 @@
 import com.winterbe.expekt.expect
 import org.jetbrains.spek.api.Spek
+import org.jetbrains.spek.api.dsl.context
+import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
+import org.junit.Assert
 
 class LogisticRegressionSpec: Spek({
 
@@ -53,6 +56,55 @@ class LogisticRegressionSpec: Spek({
         val expected = Vector(-24.0, -13.0, 2.0).transpose()
         val x = logistic.backSubstitution(U, b)
         expect(x).to.equal(expected)
+    }
+
+    describe("log likelihood") {
+        it("computes log likelihood") {
+            val xi = Vector(1.0, 2.0).transpose()
+            val beta = Vector(0.1, 0.2).transpose()
+            val probability = logistic.likelihood(xi, beta)
+            expect(probability).to.be.closeTo(0.6224593, 0.01)
+        }
+
+        context("when log likelihood gets invalid input") {
+            it("throws on different vector lengths") {
+                val xi = Vector(1.0, 2.0, 3.0).transpose()
+                val beta = Vector(0.1, 0.2).transpose()
+                try {
+                    logistic.likelihood(xi, beta)
+                    Assert.fail()
+                } catch (exception: IllegalArgumentException) {
+                    // success
+                }
+            }
+
+            it("throws on matrices") {
+                val xi =
+                        Matrix(
+                                arrayOf(1.0, 2.0),
+                                arrayOf(1.0, 2.0)
+                        )
+                val beta = Vector(0.1, 0.2).transpose()
+                try {
+                    logistic.likelihood(xi, beta)
+                    Assert.fail()
+                } catch (exception: IllegalArgumentException) {
+                    // success
+                }
+            }
+        }
+
+        it("computes first derivative of log likelihood") {
+            val x = Matrix(
+                    arrayOf(1.0, 2.0, 3.0, 4.0),
+                    arrayOf(1.1, 2.2, 3.3, 4.4)
+            )
+            val y = Vector(0.0, 1.0).transpose()
+            val beta = Vector(0.1, 0.2, 0.3, 0.4).transpose()
+            val result = logistic.logLikelyhoodPrime(x, y, beta)
+            val expected = Vector(-0.9134458, -1.826892, -2.740337, -3.653783).transpose()
+            expect(result.isCloseTo(expected, 0.001)).to.be.`true`
+        }
     }
 
     it("updates learned model using previous value and first derivative") {
