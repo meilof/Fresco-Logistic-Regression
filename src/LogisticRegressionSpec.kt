@@ -37,16 +37,8 @@ class LogisticRegressionSpec: Spek({
                 arrayOf(-2.0, 1.0, 0.0),
                 arrayOf(1.0, 6.0, 1.0)
         )))
-        val b = Matrix(arrayOf(
-                arrayOf(2.0),
-                arrayOf(-1.0),
-                arrayOf(4.0)
-        ))
-        val expected = Matrix(arrayOf(
-                arrayOf(2.0),
-                arrayOf(3.0),
-                arrayOf(-16.0)
-        ))
+        val b = Vector(2.0, -1.0, 4.0).transpose()
+        val expected = Vector(2.0, 3.0, -16.0).transpose()
         val x = logistic.forwardSubstitution(L, b)
         expect(x).to.equal(expected)
     }
@@ -57,16 +49,8 @@ class LogisticRegressionSpec: Spek({
                 arrayOf(0.0, 1.0, 6.0),
                 arrayOf(0.0, 0.0, 1.0)
         )))
-        val b = Matrix(arrayOf(
-                arrayOf(4.0),
-                arrayOf(-1.0),
-                arrayOf(2.0)
-        ))
-        val expected = Matrix(arrayOf(
-                arrayOf(-24.0),
-                arrayOf(-13.0),
-                arrayOf(2.0)
-        ))
+        val b = Vector(4.0, -1.0, 2.0).transpose()
+        val expected = Vector(-24.0, -13.0, 2.0).transpose()
         val x = logistic.backSubstitution(U, b)
         expect(x).to.equal(expected)
     }
@@ -77,12 +61,12 @@ class LogisticRegressionSpec: Spek({
                 arrayOf(3.0, 4.0)
         ))
         val H = logistic.hessian(X)
-        val l = Matrix(arrayOf(arrayOf(7.0, 8.0))).transpose()
-        var beta = Matrix(arrayOf(arrayOf(5.0, 6.0))).transpose()
+        val l = Vector(7.0, 8.0).transpose()
+        var beta = Vector(5.0, 6.0).transpose()
 
         beta = logistic.updateLearnedModel(H, beta, l)
         
-        val expected = Matrix(arrayOf(arrayOf(33.0, -12.0))).transpose()
+        val expected = Vector(33.0, -12.0).transpose()
         expect(beta.isCloseTo(expected, 0.00001)).to.be.`true`
     }
 })

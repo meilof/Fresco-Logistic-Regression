@@ -156,20 +156,16 @@ class MatrixSpec : Spek({
 
     describe("log likelihood") {
         it("computes log likelihood") {
-            val xi =
-                    Matrix(arrayOf(arrayOf(1.0, 2.0))).transpose()
-            val beta =
-                    Matrix(arrayOf(arrayOf(0.1, 0.2))).transpose()
+            val xi = Vector(1.0, 2.0).transpose()
+            val beta = Vector(0.1, 0.2).transpose()
             val probability = likelihood(xi, beta)
             expect(probability).to.be.closeTo(0.6224593, 0.01)
         }
 
         context("when log likelihood gets invalid input") {
             it("throws on different vector lengths") {
-                val xi =
-                        Matrix(arrayOf(arrayOf(1.0, 2.0, 3.0)))
-                val beta =
-                        Matrix(arrayOf(arrayOf(0.1, 0.2))).transpose()
+                val xi = Vector(1.0, 2.0, 3.0).transpose()
+                val beta = Vector(0.1, 0.2).transpose()
                 try {
                     likelihood(xi, beta)
                     fail()
@@ -184,8 +180,7 @@ class MatrixSpec : Spek({
                                 arrayOf(1.0, 2.0),
                                 arrayOf(1.0, 2.0)
                         ))
-                val beta =
-                        Matrix(arrayOf(arrayOf(0.1, 0.2))).transpose()
+                val beta = Vector(0.1, 0.2).transpose()
                 try {
                     likelihood(xi, beta)
                     fail()
@@ -200,14 +195,10 @@ class MatrixSpec : Spek({
                     arrayOf(1.0, 2.0, 3.0, 4.0),
                     arrayOf(1.1, 2.2, 3.3, 4.4)
             ))
-            val y = Matrix(arrayOf(arrayOf(0.0, 1.0)))
-                    .transpose()
-            val beta = Matrix(arrayOf(arrayOf(0.1, 0.2, 0.3, 0.4)))
-                    .transpose()
+            val y = Vector(0.0, 1.0).transpose()
+            val beta = Vector(0.1, 0.2, 0.3, 0.4).transpose()
             val result = logLikelyhoodPrime(x, y, beta)
-            val expected = Matrix(arrayOf(
-                    arrayOf(-0.9134458, -1.826892, -2.740337, -3.653783)
-            )).transpose()
+            val expected = Vector(-0.9134458, -1.826892, -2.740337, -3.653783).transpose()
             expect(result.isCloseTo(expected, 0.001)).to.be.`true`
         }
     }
