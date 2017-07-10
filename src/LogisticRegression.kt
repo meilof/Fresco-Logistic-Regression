@@ -68,7 +68,7 @@ class LogisticRegression {
         if (v1.numberOfColumns != 1 || v2.numberOfColumns != 1) {
             throw IllegalArgumentException("input must be vectors")
         }
-        val exponential = exp(- v1.transpose().times(v2).get(0, 0))
+        val exponential = exp(-v1.transpose().times(v2)[0, 0])
         return 1.0 / (1.0 + exponential)
     }
 
