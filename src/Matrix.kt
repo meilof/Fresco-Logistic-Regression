@@ -195,7 +195,7 @@ operator fun Double.times(matrix: MatrixType): MatrixType {
     return matrix * this
 }
 
-fun logLikelyhood(v1: MatrixType, v2: MatrixType): Double {
+fun likelihood(v1: MatrixType, v2: MatrixType): Double {
     if (v1.numberOfRows != v2.numberOfRows) {
         throw IllegalArgumentException("vectors have different number" +
                 " of elements")
@@ -205,4 +205,17 @@ fun logLikelyhood(v1: MatrixType, v2: MatrixType): Double {
     }
     val exponential = exp(- v1.transpose().times(v2).get(0, 0))
     return 1.0 / (1.0 + exponential)
+}
+
+fun logLikelyhoodPrime(
+        x: MatrixType, y: MatrixType, beta: MatrixType): MatrixType {
+    val result = Array(beta.numberOfRows, { Array(1, { 0.0 }) })
+    for (k in 0 until beta.numberOfRows) {
+        for (i in 0 until x.numberOfRows) {
+            result[k][0] += (
+                    y[i,0] - likelihood(x.row(i), beta)
+                    ) * x[i,k]
+        }
+    }
+    return Matrix(result)
 }

@@ -1,6 +1,7 @@
 import com.winterbe.expekt.expect
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.context
+import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.junit.Assert.fail
 
@@ -144,43 +145,61 @@ class MatrixSpec : Spek({
         }
     }
 
-    it("computes log likelyhood") {
-        val xi =
-                Matrix(arrayOf(arrayOf(1.0, 2.0))).transpose()
-        val beta =
-                Matrix(arrayOf(arrayOf(0.1, 0.2))).transpose()
-        val probability = logLikelyhood(xi, beta)
-        expect(probability).to.be.closeTo(0.6224593, 0.01)
-    }
-
-    context("when log likelyhood gets invalid input") {
-        it("throws on different vector lengths") {
+    describe("log likelihood") {
+        it("computes log likelihood") {
             val xi =
-                    Matrix(arrayOf(arrayOf(1.0, 2.0, 3.0)))
+                    Matrix(arrayOf(arrayOf(1.0, 2.0))).transpose()
             val beta =
                     Matrix(arrayOf(arrayOf(0.1, 0.2))).transpose()
-            try {
-                logLikelyhood(xi, beta)
-                fail()
-            } catch (exception: IllegalArgumentException) {
-                // success
+            val probability = likelihood(xi, beta)
+            expect(probability).to.be.closeTo(0.6224593, 0.01)
+        }
+
+        context("when log likelihood gets invalid input") {
+            it("throws on different vector lengths") {
+                val xi =
+                        Matrix(arrayOf(arrayOf(1.0, 2.0, 3.0)))
+                val beta =
+                        Matrix(arrayOf(arrayOf(0.1, 0.2))).transpose()
+                try {
+                    likelihood(xi, beta)
+                    fail()
+                } catch (exception: IllegalArgumentException) {
+                    // success
+                }
+            }
+
+            it("throws on matrices") {
+                val xi =
+                        Matrix(arrayOf(
+                                arrayOf(1.0, 2.0),
+                                arrayOf(1.0, 2.0)
+                        ))
+                val beta =
+                        Matrix(arrayOf(arrayOf(0.1, 0.2))).transpose()
+                try {
+                    likelihood(xi, beta)
+                    fail()
+                } catch (exception: IllegalArgumentException) {
+                    // success
+                }
             }
         }
 
-        it("throws on matrices") {
-            val xi =
-                    Matrix(arrayOf(
-                            arrayOf(1.0, 2.0),
-                            arrayOf(1.0, 2.0)
-                    ))
-            val beta =
-                    Matrix(arrayOf(arrayOf(0.1, 0.2))).transpose()
-            try {
-                logLikelyhood(xi, beta)
-                fail()
-            } catch (exception: IllegalArgumentException) {
-                // success
-            }
+        it("computes first derivative of log likelihood") {
+            val x = Matrix(arrayOf(
+                    arrayOf(1.0, 2.0, 3.0, 4.0),
+                    arrayOf(1.1, 2.2, 3.3, 4.4)
+            ))
+            val y = Matrix(arrayOf(arrayOf(0.0, 1.0)))
+                    .transpose()
+            val beta = Matrix(arrayOf(arrayOf(0.1, 0.2, 0.3, 0.4)))
+                    .transpose()
+            val result = logLikelyhoodPrime(x, y, beta)
+            val expected = Matrix(arrayOf(
+                    arrayOf(-0.9134458, -1.826892, -2.740337, -3.653783)
+            )).transpose()
+            expect(result.isCloseTo(expected, 0.001)).to.be.`true`
         }
     }
 
@@ -199,3 +218,4 @@ class MatrixSpec : Spek({
         expect(matrix.isCloseTo(notCloseMatrix, 0.25)).to.be.`false`
     }
 })
+
