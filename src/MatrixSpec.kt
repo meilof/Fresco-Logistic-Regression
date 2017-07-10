@@ -41,6 +41,15 @@ class MatrixSpec : Spek({
         expect(transposed[1, 2]).to.equal(matrix[2, 1])
     }
 
+    it("can create vectors") {
+        val vector = Vector(1.0, 2.0, 3.0)
+        expect(vector.numberOfRows).to.equal(1)
+        expect(vector.numberOfColumns).to.equal(3)
+        expect(vector[0]).to.equal(1.0)
+        expect(vector[1]).to.equal(2.0)
+        expect(vector[2]).to.equal(3.0)
+    }
+
     it("can return a row") {
         val matrix = Matrix(arrayOf(
                 arrayOf(1.0, 2.0),

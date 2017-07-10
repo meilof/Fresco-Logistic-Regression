@@ -116,6 +116,17 @@ class Matrix(val elements: Array<Array<Double>>): MatrixType() {
     }
 }
 
+class Vector(vararg val elements: Double): MatrixType() {
+    override val numberOfRows = 1
+    override val numberOfColumns = elements.size
+    operator fun get(index: Int): Double {
+        return elements[index]
+    }
+    override operator fun get(row: Int, column: Int): Double {
+        return this[column]
+    }
+}
+
 class TransposedMatrix(val matrix: MatrixType): MatrixType() {
     override val numberOfRows: Int
         get() = matrix.numberOfColumns
