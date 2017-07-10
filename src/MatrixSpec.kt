@@ -116,4 +116,44 @@ class MatrixSpec : Spek({
             expect(transposed).to.equal(expected)
         }
     }
+
+    it("computes log likelyhood") {
+        val xi =
+                Matrix(arrayOf(arrayOf(1.0, 2.0))).transpose()
+        val beta =
+                Matrix(arrayOf(arrayOf(0.1, 0.2))).transpose()
+        val probability = logLikelyhood(xi, beta)
+        expect(probability).to.be.closeTo(0.6224593, 0.01)
+    }
+
+    context("when log likelyhood gets invalid input") {
+        it("throws on different vector lengths") {
+            val xi =
+                    Matrix(arrayOf(arrayOf(1.0, 2.0, 3.0)))
+            val beta =
+                    Matrix(arrayOf(arrayOf(0.1, 0.2))).transpose()
+            try {
+                logLikelyhood(xi, beta)
+                fail()
+            } catch (exception: IllegalArgumentException) {
+                // success
+            }
+        }
+
+        it("throws on matrices") {
+            val xi =
+                    Matrix(arrayOf(
+                            arrayOf(1.0, 2.0),
+                            arrayOf(1.0, 2.0)
+                    ))
+            val beta =
+                    Matrix(arrayOf(arrayOf(0.1, 0.2))).transpose()
+            try {
+                logLikelyhood(xi, beta)
+                fail()
+            } catch (exception: IllegalArgumentException) {
+                // success
+            }
+        }
+    }
 })

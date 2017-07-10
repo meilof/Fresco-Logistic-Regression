@@ -161,3 +161,15 @@ class SubtractedMatrix(val left: MatrixType, val right: MatrixType): MatrixType(
 operator fun Double.times(matrix: MatrixType): MatrixType {
     return matrix * this
 }
+
+fun logLikelyhood(v1: MatrixType, v2: MatrixType): Double {
+    if (v1.numberOfRows != v2.numberOfRows) {
+        throw IllegalArgumentException("vectors have different number" +
+                " of elements")
+    }
+    if (v1.numberOfColumns != 1 || v2.numberOfColumns != 1) {
+        throw IllegalArgumentException("input must be vectors")
+    }
+    val exponential = exp(- v1.transpose().times(v2).get(0, 0))
+    return 1.0 / (1.0 + exponential)
+}
