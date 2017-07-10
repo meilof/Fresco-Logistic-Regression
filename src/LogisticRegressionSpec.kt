@@ -101,7 +101,7 @@ class LogisticRegressionSpec: Spek({
             )
             val y = Vector(0.0, 1.0).transpose()
             val beta = Vector(0.1, 0.2, 0.3, 0.4).transpose()
-            val result = logistic.logLikelyhoodPrime(x, y, beta)
+            val result = logistic.logLikelihoodPrime(x, y, beta)
             val expected = Vector(-0.9134458, -1.826892, -2.740337, -3.653783).transpose()
             expect(result.isCloseTo(expected, 0.001)).to.be.`true`
         }

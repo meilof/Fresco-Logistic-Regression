@@ -72,7 +72,7 @@ class LogisticRegression {
         return 1.0 / (1.0 + exponential)
     }
 
-    fun logLikelyhoodPrime(
+    fun logLikelihoodPrime(
             x: MatrixType, y: MatrixType, beta: MatrixType): MatrixType {
         val result = Array(beta.numberOfRows, { Array(1, { 0.0 }) })
         for (k in 0 until beta.numberOfRows) {
