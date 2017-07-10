@@ -59,4 +59,11 @@ class LogisticRegression {
         }
         return Matrix(x)
     }
+
+    fun updateLearnedModel(H: MatrixType, beta: MatrixType, l: MatrixType): MatrixType {
+        val L = choleskyDecomposition(-1.0 * H)
+        val y = forwardSubstitution(L, l)
+        val r = backSubstitution(L.transpose(), y)
+        return beta + r
+    }
 }

@@ -70,4 +70,19 @@ class LogisticRegressionSpec: Spek({
         val x = logistic.backSubstitution(U, b)
         expect(x).to.equal(expected)
     }
+
+    it("updates learned model using previous value and first derivative") {
+        val X = Matrix(arrayOf(
+                arrayOf(1.0, 2.0),
+                arrayOf(3.0, 4.0)
+        ))
+        val H = logistic.hessian(X)
+        val l = Matrix(arrayOf(arrayOf(7.0, 8.0))).transpose()
+        var beta = Matrix(arrayOf(arrayOf(5.0, 6.0))).transpose()
+
+        beta = logistic.updateLearnedModel(H, beta, l)
+        
+        val expected = Matrix(arrayOf(arrayOf(33.0, -12.0))).transpose()
+        expect(beta.isCloseTo(expected, 0.00001)).to.be.`true`
+    }
 })
