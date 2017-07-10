@@ -32,6 +32,10 @@ abstract class MatrixType {
         return SubtractedMatrix(this, other)
     }
 
+    operator fun plus(other: MatrixType): MatrixType {
+        return AddedMatrix(this, other)
+    }
+
     override fun equals(other: Any?): Boolean {
         if (other !is MatrixType) return false
         if (numberOfRows != other.numberOfRows) return false
@@ -155,6 +159,16 @@ class SubtractedMatrix(val left: MatrixType, val right: MatrixType): MatrixType(
         get() = left.numberOfColumns
     override operator fun get(row: Int, column: Int): Double {
         return left[row, column] - right[row, column]
+    }
+}
+
+class AddedMatrix(val left: MatrixType, val right: MatrixType): MatrixType() {
+    override val numberOfRows: Int
+        get() = left.numberOfRows
+    override val numberOfColumns: Int
+        get() = left.numberOfColumns
+    override operator fun get(row: Int, column: Int): Double {
+        return left[row, column] + right[row, column]
     }
 }
 

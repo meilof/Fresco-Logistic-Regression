@@ -79,6 +79,20 @@ class MatrixSpec : Spek({
         expect(matrix - toBeSubtracted).to.equal(expected)
     }
 
+    it("can add matrices") {
+        val toBeAdded= Matrix(arrayOf(
+                arrayOf(2.0, 4.0),
+                arrayOf(6.0, 8.0),
+                arrayOf(10.0, 12.0)
+        ))
+        val expected = Matrix(arrayOf(
+                arrayOf(3.0, 6.0),
+                arrayOf(9.0, 12.0),
+                arrayOf(15.0, 18.0)
+        ))
+        expect(matrix + toBeAdded).to.equal(expected)
+    }
+
     context("when transposing a lower triangular matrix") {
         val transposed = LowerTriangularMatrix(Matrix(arrayOf(
                 arrayOf(1.0, 0.0),
