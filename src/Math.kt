@@ -1,5 +1,5 @@
 
-val numIterations = 15
+val numIterations = 40
 
 fun exp(a: Double): Double {
     return exp(a, 1)

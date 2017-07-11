@@ -87,4 +87,14 @@ class LogisticRegression {
         val r = backSubstitution(L.transpose(), y)
         return beta + r
     }
+
+    fun fitLogisticModel(X: MatrixType, Y: Vector): Vector {
+        val H = hessian(X)
+        var beta = Vector(*DoubleArray(X.numberOfColumns, { 0.0 }))
+        for (i in 0 until 500) {
+            val lprime = logLikelihoodPrime(X, Y, beta)
+            beta = updateLearnedModel(H, beta, lprime)
+        }
+        return beta
+    }
 }
