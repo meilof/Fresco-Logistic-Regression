@@ -76,6 +76,20 @@ class MatrixSpec : Spek({
         expect(multiplied[2, 2]).to.equal(510.0)
     }
 
+    it("throws when attempting to multiply incompatible matrices") {
+        val otherMatrix = Matrix(
+                arrayOf(10.0, 20.0, 30.0),
+                arrayOf(40.0, 50.0, 60.0),
+                arrayOf(70.0, 80.0, 90.0)
+        )
+        try {
+            matrix * otherMatrix
+            fail()
+        } catch(exception: IllegalArgumentException) {
+            // success
+        }
+    }
+
     it("can be multiplied by a scalar postfix") {
         val multiplied = matrix * 3.0
         expect(multiplied[0, 0]).to.equal(3.0)
@@ -102,6 +116,19 @@ class MatrixSpec : Spek({
         expect(matrix - toBeSubtracted).to.equal(expected)
     }
 
+    it("throws when subtracting incompatible matrices") {
+        val toBeSubtracted = Matrix(
+                arrayOf(2.0, 4.0),
+                arrayOf(6.0, 8.0)
+        )
+        try {
+            matrix - toBeSubtracted
+            fail()
+        } catch (exception: IllegalArgumentException) {
+            // success
+        }
+    }
+
     it("can add matrices") {
         val toBeAdded= Matrix(
                 arrayOf(2.0, 4.0),
@@ -114,6 +141,19 @@ class MatrixSpec : Spek({
                 arrayOf(15.0, 18.0)
         )
         expect(matrix + toBeAdded).to.equal(expected)
+    }
+
+    it("throws when adding incompatible matrices") {
+        val toBeAdded= Matrix(
+                arrayOf(2.0, 4.0),
+                arrayOf(6.0, 8.0)
+        )
+        try {
+            matrix + toBeAdded
+            fail()
+        } catch (exception: IllegalArgumentException) {
+            // success
+        }
     }
 
     context("when transposing a lower triangular matrix") {
@@ -167,6 +207,19 @@ class MatrixSpec : Spek({
         )
         expect(matrix.isCloseTo(closeMatrix, 0.25)).to.be.`true`
         expect(matrix.isCloseTo(notCloseMatrix, 0.25)).to.be.`false`
+    }
+
+    it("throws when comparing matrices of different shapes") {
+        val closeMatrix = Matrix(
+                arrayOf(1.25, 2.0),
+                arrayOf(3.0, 4.0)
+        )
+        try {
+            matrix.isCloseTo(closeMatrix, 0.25)
+            fail()
+        } catch (exception: IllegalArgumentException) {
+            // success
+        }
     }
 
     it("can create a matrix from multiple vectors") {

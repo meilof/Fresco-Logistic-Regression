@@ -17,6 +17,7 @@ abstract class MatrixType {
     }
 
     operator fun times(other: MatrixType): MatrixType {
+        assertMultiplicationCompatibility(this, other)
         val rows = numberOfRows
         val columns = other.numberOfColumns
         val multiplied = Array(rows, { Array(columns, { 0.0 }) })
@@ -32,16 +33,34 @@ abstract class MatrixType {
         return Matrix(*multiplied)
     }
 
+    private fun assertMultiplicationCompatibility(a: MatrixType, b: MatrixType) {
+        val compatible = a.numberOfRows == b.numberOfColumns &&
+                a.numberOfColumns == b.numberOfRows
+        if (!compatible) {
+            throw IllegalArgumentException("these matrices cannot be multiplied")
+        }
+    }
+
     operator fun times(scalar: Double): MatrixType {
         return MultipliedMatrix(this, scalar)
     }
 
     operator fun minus(other: MatrixType): MatrixType {
+        assertOfSameShape(this, other)
         return SubtractedMatrix(this, other)
     }
 
     operator fun plus(other: MatrixType): MatrixType {
+        assertOfSameShape(this, other)
         return AddedMatrix(this, other)
+    }
+
+    private fun assertOfSameShape(a: MatrixType, b: MatrixType) {
+        val sameShape = a.numberOfRows == b.numberOfRows &&
+                a.numberOfColumns == b.numberOfColumns
+        if (!sameShape) {
+            throw IllegalArgumentException("these matrices are not of the same shape")
+        }
     }
 
     override fun equals(other: Any?): Boolean {
@@ -60,6 +79,7 @@ abstract class MatrixType {
     }
 
     fun isCloseTo(other: MatrixType, delta: Double): Boolean {
+        assertOfSameShape(this, other)
         for (row in 0 until numberOfRows) {
             for (column in 0 until numberOfColumns) {
                 if (Math.abs(this[row, column] - other[row, column]) > delta) {
