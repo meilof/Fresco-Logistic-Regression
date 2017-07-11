@@ -28,17 +28,18 @@ class LogisticRegression {
      *
      * See also https://en.wikipedia.org/wiki/Triangular_matrix#Algorithm
      */
-    fun forwardSubstitution(L: LowerTriangularMatrix, b: MatrixType): MatrixType {
-        val n = b.numberOfRows
-        val y = Array(n, { row -> arrayOf(0.0) })
+    fun forwardSubstitution(L: LowerTriangularMatrix, b: Vector):
+            Vector {
+        val n = b.size
+        val y = DoubleArray(n, { 0.0 })
         for (i in 0 until n) {
-            y[i][0] = b[i, 0]
+            y[i] = b[i]
             for (j in 0 until i) {
-                y[i][0] -= L[i, j] * y[j][0]
+                y[i] -= L[i, j] * y[j]
             }
-            y[i][0] /= L[i, i]
+            y[i] /= L[i, i]
         }
-        return Matrix(*y)
+        return Vector(*y)
     }
 
     /**
@@ -47,45 +48,40 @@ class LogisticRegression {
      *
      * See also https://en.wikipedia.org/wiki/Triangular_matrix#Algorithm
      */
-    fun backSubstitution(U: UpperTriangularMatrix, b: MatrixType): MatrixType {
-        val n = b.numberOfRows
-        val x = Array(n, { row -> arrayOf(0.0) })
+    fun backSubstitution(U: UpperTriangularMatrix, b: Vector):
+            Vector {
+        val n = b.size
+        val x = DoubleArray(n, { 0.0 })
         for (i in (0 until n).reversed()) {
-            x[i][0] = b[i, 0]
+            x[i] = b[i]
             for (j in i+1 until n) {
-                x[i][0] -= U[i, j] * x[j][0]
+                x[i] -= U[i, j] * x[j]
             }
-            x[i][0] /= U[i, i]
+            x[i] /= U[i, i]
         }
-        return Matrix(*x)
+        return Vector(*x)
     }
 
-    fun likelihood(v1: MatrixType, v2: MatrixType): Double {
-        if (v1.numberOfRows != v2.numberOfRows) {
-            throw IllegalArgumentException("vectors have different number" +
-                    " of elements")
-        }
-        if (v1.numberOfColumns != 1 || v2.numberOfColumns != 1) {
-            throw IllegalArgumentException("input must be vectors")
-        }
-        val exponential = exp(-v1.transpose().times(v2)[0, 0])
+    fun likelihood(v1: Vector, v2: Vector): Double {
+        val exponential = exp(- (v1 * v2)[0])
         return 1.0 / (1.0 + exponential)
     }
 
     fun logLikelihoodPrime(
-            x: MatrixType, y: MatrixType, beta: MatrixType): MatrixType {
-        val result = Array(beta.numberOfRows, { Array(1, { 0.0 }) })
-        for (k in 0 until beta.numberOfRows) {
+            x: MatrixType, y: Vector, beta: Vector): Vector {
+        val result = DoubleArray(beta.size, { 0.0 })
+        for (k in 0 until beta.size) {
             for (i in 0 until x.numberOfRows) {
-                result[k][0] += (
-                        y[i,0] - likelihood(x.row(i), beta)
+                result[k] += (
+                        y[i] - likelihood(x.row(i), beta)
                         ) * x[i,k]
             }
         }
-        return Matrix(*result)
+        return Vector(*result)
     }
 
-    fun updateLearnedModel(H: MatrixType, beta: MatrixType, l: MatrixType): MatrixType {
+    fun updateLearnedModel(H: MatrixType, beta: Vector, l: Vector):
+            Vector {
         val L = choleskyDecomposition(-1.0 * H)
         val y = forwardSubstitution(L, l)
         val r = backSubstitution(L.transpose(), y)

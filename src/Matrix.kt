@@ -155,6 +155,14 @@ class Vector(vararg val elements: Double): MatrixType() {
         return (this - other as MatrixType).row(0)
     }
     var size: Int = elements.size
+    override fun toString(): String {
+        var string = ""
+        for (i in 0 until size) {
+            if (string != "") { string += ", " }
+            string += "${elements[i]}"
+        }
+        return "[${string}]"
+    }
 }
 
 class TransposedMatrix(val matrix: MatrixType): MatrixType() {
