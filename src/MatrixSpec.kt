@@ -41,13 +41,29 @@ class MatrixSpec : Spek({
         expect(transposed[1, 2]).to.equal(matrix[2, 1])
     }
 
-    it("can create vectors") {
-        val vector = Vector(1.0, 2.0, 3.0)
-        expect(vector.numberOfRows).to.equal(1)
-        expect(vector.numberOfColumns).to.equal(3)
-        expect(vector[0]).to.equal(1.0)
-        expect(vector[1]).to.equal(2.0)
-        expect(vector[2]).to.equal(3.0)
+    describe("vectors") {
+
+        val v1 = Vector(1.0, 2.0)
+        val v2 = Vector(3.0, 5.0)
+
+        it("can create vectors") {
+            expect(v1.numberOfRows).to.equal(1)
+            expect(v1.numberOfColumns).to.equal(2)
+            expect(v1[0]).to.equal(1.0)
+            expect(v1[1]).to.equal(2.0)
+        }
+
+        it("can add vectors") {
+            expect(v1 + v2 is Vector).to.be.`true`
+        }
+
+        it("can subtract vectors") {
+            expect(v1 - v2 is Vector).to.be.`true`
+        }
+
+        it("can multiply a matrix and a vector") {
+            expect(matrix * v1 is Vector).to.be.`true`
+        }
     }
 
     it("can return a row") {
@@ -56,10 +72,7 @@ class MatrixSpec : Spek({
                 arrayOf(3.0, 4.0)
         )
         val firstRow = matrix.row(0)
-        val expected = Matrix(
-                arrayOf(1.0),
-                arrayOf(2.0)
-        )
+        val expected = Vector(1.0, 2.0)
         expect(firstRow).to.equal(expected)
     }
 

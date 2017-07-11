@@ -4,12 +4,12 @@ abstract class MatrixType {
 
     abstract operator fun get(row: Int, column: Int): Double
 
-    fun row(index: Int): MatrixType {
+    fun row(index: Int): Vector {
         val row = DoubleArray(numberOfColumns, { 0.0 })
         for (column in 0 until numberOfColumns) {
             row[column] = get(index, column)
         }
-        return Vector(*row).transpose()
+        return Vector(*row)
     }
 
     open fun transpose(): MatrixType {
@@ -34,11 +34,14 @@ abstract class MatrixType {
     }
 
     private fun assertMultiplicationCompatibility(a: MatrixType, b: MatrixType) {
-        val compatible = a.numberOfRows == b.numberOfColumns &&
-                a.numberOfColumns == b.numberOfRows
+        val compatible = a.numberOfColumns == b.numberOfRows
         if (!compatible) {
             throw IllegalArgumentException("these matrices cannot be multiplied")
         }
+    }
+
+    open operator fun times(vector: Vector): Vector {
+        return (this * vector.transpose()).transpose().row(0)
     }
 
     operator fun times(scalar: Double): MatrixType {
@@ -144,6 +147,12 @@ class Vector(vararg val elements: Double): MatrixType() {
     }
     override operator fun get(row: Int, column: Int): Double {
         return this[column]
+    }
+    operator fun plus(other: Vector): Vector {
+        return (this + other as MatrixType).row(0)
+    }
+    operator fun minus(other: Vector): Vector {
+        return (this - other as MatrixType).row(0)
     }
     var size: Int = elements.size
 }
