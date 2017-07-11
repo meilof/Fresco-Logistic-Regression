@@ -168,5 +168,16 @@ class MatrixSpec : Spek({
         expect(matrix.isCloseTo(closeMatrix, 0.25)).to.be.`true`
         expect(matrix.isCloseTo(notCloseMatrix, 0.25)).to.be.`false`
     }
+
+    it("can create a matrix from multiple vectors") {
+        val v1 = Vector(1.0, 2.0, 3.0, 4.0)
+        val v2 = Vector(11.0, 22.0, 33.0, 44.0)
+        val m = matrixFromVectors(v1, v2)
+        val expected = Matrix(
+                arrayOf(1.0, 2.0, 3.0, 4.0),
+                arrayOf(11.0, 22.0, 33.0, 44.0)
+        )
+        expect(m).to.equal(expected)
+    }
 })
 

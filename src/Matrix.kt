@@ -125,6 +125,7 @@ class Vector(vararg val elements: Double): MatrixType() {
     override operator fun get(row: Int, column: Int): Double {
         return this[column]
     }
+    var size: Int = elements.size
 }
 
 class TransposedMatrix(val matrix: MatrixType): MatrixType() {
@@ -204,4 +205,16 @@ class AddedMatrix(val left: MatrixType, val right: MatrixType): MatrixType() {
 
 operator fun Double.times(matrix: MatrixType): MatrixType {
     return matrix * this
+}
+
+fun matrixFromVectors(vararg vectors: Vector): MatrixType {
+    val rows = vectors.size
+    val columns = vectors[0].size
+    val result = Array(rows, { Array(columns, { 0.0 }) })
+    for (row in 0 until rows) {
+        for (column in 0 until columns) {
+            result[row][column] = vectors[row].get(column)
+        }
+    }
+    return Matrix(*result)
 }
