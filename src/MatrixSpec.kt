@@ -245,5 +245,14 @@ class MatrixSpec : Spek({
         )
         expect(m).to.equal(expected)
     }
+
+    it("can create an identity matrix") {
+        val expected = Matrix(
+                arrayOf(1.0, 0.0, 0.0),
+                arrayOf(0.0, 1.0, 0.0),
+                arrayOf(0.0, 0.0, 1.0)
+        )
+        expect(IdentityMatrix(3) as MatrixType).to.equal(expected)
+    }
 })
 

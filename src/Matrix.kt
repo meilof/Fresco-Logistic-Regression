@@ -240,6 +240,18 @@ class AddedMatrix(val left: MatrixType, val right: MatrixType): MatrixType() {
     }
 }
 
+class IdentityMatrix(size: Int): MatrixType() {
+    override val numberOfColumns: Int = size
+    override val numberOfRows: Int = size
+    override operator fun get(row: Int, column: Int): Double {
+        if (row == column) {
+            return 1.0
+        } else {
+            return 0.0
+        }
+    }
+}
+
 operator fun Double.times(matrix: MatrixType): MatrixType {
     return matrix * this
 }
