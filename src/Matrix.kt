@@ -44,7 +44,7 @@ abstract class MatrixType {
         return (this * vector.transpose()).transpose().row(0)
     }
 
-    operator fun times(scalar: Double): MatrixType {
+    open operator fun times(scalar: Double): MatrixType {
         return MultipliedMatrix(this, scalar)
     }
 
@@ -149,10 +149,13 @@ class Vector(vararg val elements: Double): MatrixType() {
         return this[column]
     }
     operator fun plus(other: Vector): Vector {
-        return (this + other as MatrixType).row(0)
+        return super.plus(other).row(0)
     }
     operator fun minus(other: Vector): Vector {
-        return (this - other as MatrixType).row(0)
+        return super.minus(other).row(0)
+    }
+    override fun times(scalar: Double): Vector {
+        return super.times(scalar).row(0)
     }
     var size: Int = elements.size
     override fun toString(): String {
@@ -254,6 +257,10 @@ class IdentityMatrix(size: Int): MatrixType() {
 
 operator fun Double.times(matrix: MatrixType): MatrixType {
     return matrix * this
+}
+
+operator fun Double.times(vector: Vector): Vector {
+    return vector * this
 }
 
 fun matrixFromVectors(vararg vectors: Vector): MatrixType {

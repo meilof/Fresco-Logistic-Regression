@@ -64,6 +64,14 @@ class MatrixSpec : Spek({
         it("can multiply a matrix and a vector") {
             expect(matrix * v1 is Vector).to.be.`true`
         }
+
+        it("can multiply a vector by a scalar prefix") {
+            expect(2.0 * v1 is Vector).to.be.`true`
+        }
+
+        it("can multiply a vector by a scalar postfix") {
+            expect(v1 * 2.0 is Vector).to.be.`true`
+        }
     }
 
     it("can return a row") {
