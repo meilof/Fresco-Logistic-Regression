@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: scapi:scapi:dfc8b2da384d87310c8f755b301bc085b1557671">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/scapi/scapi/dfc8b2da384d87310c8f755b301bc085b1557671/scapi-dfc8b2da384d87310c8f755b301bc085b1557671.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/scapi/scapi/dfc8b2da384d87310c8f755b301bc085b1557671/scapi-dfc8b2da384d87310c8f755b301bc085b1557671-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/scapi/scapi/dfc8b2da384d87310c8f755b301bc085b1557671/scapi-dfc8b2da384d87310c8f755b301bc085b1557671-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
