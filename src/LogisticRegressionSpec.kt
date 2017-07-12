@@ -113,15 +113,31 @@ class LogisticRegressionSpec: Spek({
         val beta_wt = -8.08348
 
         val ones = Vector(*DoubleArray(hp.size, { 1.0 }))
-        val X = matrixFromVectors(hp,
-                wt
-                , ones
-        ).transpose()
+        val X = matrixFromVectors(hp, wt, ones).transpose()
         val Y = am
-        val beta = logistic.fitLogisticModel(X, Y)
+        val beta = logistic.fitLogisticModel(
+                X, Y, numberOfIterations = 350
+        )
 
         expect(beta.isCloseTo(
-                Vector(beta_hp, beta_wt, intercept), 0.001
+                Vector(beta_hp, beta_wt, intercept), 0.01
+        )).to.be.`true`
+    }
+
+    it("computes best beta for logistic regression with non-zero lambda") {
+        val intercept = 1.65707
+        val beta_hp = 0.00968555
+        val beta_wt = -1.17481
+
+        val ones = Vector(*DoubleArray(hp.size, { 1.0 }))
+        val X = matrixFromVectors(hp, wt, ones).transpose()
+        val Y = am
+        val beta = logistic.fitLogisticModel(
+                X, Y, lambda = 1.0, numberOfIterations = 4
+        )
+
+        expect(beta.isCloseTo(
+                Vector(beta_hp, beta_wt, intercept), 0.01
         )).to.be.`true`
     }
 })

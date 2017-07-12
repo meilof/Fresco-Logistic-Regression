@@ -88,11 +88,15 @@ class LogisticRegression {
         return beta + r
     }
 
-    fun fitLogisticModel(X: MatrixType, Y: Vector): Vector {
-        val H = hessian(X)
+    fun fitLogisticModel(X: MatrixType, Y: Vector,
+                         lambda: Double = 0.0,
+                         numberOfIterations: Int = 10): Vector {
+        val I = IdentityMatrix(X.numberOfColumns)
+        val H = hessian(X) - lambda * I
         var beta = Vector(*DoubleArray(X.numberOfColumns, { 0.0 }))
-        for (i in 0 until 500) {
-            val lprime = logLikelihoodPrime(X, Y, beta)
+        for (i in 0 until numberOfIterations) {
+            var lprime = logLikelihoodPrime(X, Y, beta)
+            lprime -= (lambda * beta)
             beta = updateLearnedModel(H, beta, lprime)
         }
         return beta
