@@ -22,5 +22,9 @@ class ExpressionSpec : Spek({
         expect(evaluate(s3 + s2 - s1)).to.equal(4)
         expect(evaluate(s3 - s2 + s1)).to.equal(2)
     }
+
+    it("supports multiplication") {
+        expect(evaluate(s2 * s3)).to.equal(6)
+    }
 })
 
