@@ -9,20 +9,31 @@ import java.math.BigInteger
 
 interface Expression {
     fun build(builder: ProtocolBuilderNumeric): Computation<SInt>
+
+    operator fun plus(other: Expression): Expression {
+        return Add(this, other)
+    }
+
+    operator fun minus(other: Expression): Expression {
+        return Subtract(this, other)
+    }
 }
 
 class SecureInt(val value: Int): Expression {
     override fun build(builder: ProtocolBuilderNumeric): Computation<SInt> {
         return builder.numeric().known(BigInteger.valueOf(value.toLong()))
     }
-
-    operator fun plus(other: SecureInt): Expression {
-        return Add(this, other)
-    }
 }
 
-class Add(val left: SecureInt, val right: SecureInt): Expression {
+class Add(val left: Expression, val right: Expression): Expression {
     override fun build(builder: ProtocolBuilderNumeric): Computation<SInt> {
         return builder.numeric().add(left.build(builder), right.build(builder))
     }
 }
+
+class Subtract(val left: Expression, val right: Expression) : Expression {
+    override fun build(builder: ProtocolBuilderNumeric): Computation<SInt> {
+        return builder.numeric().sub(left.build(builder), right.build(builder))
+    }
+}
+

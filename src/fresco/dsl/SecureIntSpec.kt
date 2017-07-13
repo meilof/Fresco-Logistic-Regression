@@ -6,19 +6,25 @@ import org.jetbrains.spek.api.dsl.it
 
 class SecureIntSpec : Spek({
 
-    it("can be created") {
-        expect(SecureInt(42)).to.not.be.`null`
-    }
+    val s1 = SecureInt(1)
+    val s2 = SecureInt(2)
+    val s3 = SecureInt(3)
 
     it("can be evaluated as a Fresco computation") {
-        val i = SecureInt(42)
-        expect(evaluate(i)).to.equal(42)
+        expect(evaluate(s1)).to.equal(1)
     }
 
     it("can be added to another secure int") {
-        val a = SecureInt(2)
-        val b = SecureInt(3)
-        expect(evaluate(a + b)).to.equal(5)
+        expect(evaluate(s2 + s3)).to.equal(5)
+    }
+
+    it("can be subtracted from another secure int") {
+        expect(evaluate(s3 - s2)).to.equal(1)
+    }
+
+    it("can chain expressions") {
+        expect(evaluate(s3 + s2 - s1)).to.equal(4)
+        expect(evaluate(s3 - s2 + s1)).to.equal(2)
     }
 })
 
