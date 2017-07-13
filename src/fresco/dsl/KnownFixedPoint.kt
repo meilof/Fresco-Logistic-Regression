@@ -4,14 +4,14 @@ import dk.alexandra.fresco.framework.Computation
 import dk.alexandra.fresco.framework.builder.ProtocolBuilderNumeric
 import dk.alexandra.fresco.framework.value.SInt
 
-class KnownFixedPoint(val value: Double) : FixedPointExpression {
+open class FixedPoint(val underlyingInt: IntExpression) : FixedPointExpression {
     override fun build(builder: ProtocolBuilderNumeric): Computation<SInt> {
-        return builder.numeric().known(value.toFixedPoint())
+        return underlyingInt.build(builder)
     }
 }
 
-class ClosedFixedPoint(val value: Double, val party: Int) : FixedPointExpression {
-    override fun build(builder: ProtocolBuilderNumeric): Computation<SInt> {
-        return builder.numeric().input(value.toFixedPoint(), party)
-    }
-}
+class KnownFixedPoint(val value: Double)
+    : FixedPoint(KnownInt(value.toFixedPoint()))
+
+class ClosedFixedPoint(val value: Double, inputParty: Int)
+    : FixedPoint(ClosedInt(value.toFixedPoint(), inputParty))
