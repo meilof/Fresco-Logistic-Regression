@@ -104,7 +104,7 @@ private class DummyResourcePool: DummyArithmeticResourcePool {
     }
 
     override fun getSerializer(): BigIntegerSerializer {
-        return BigIntegerWithFixedLengthSerializer(maxBitLength)
+        return BigIntegerWithFixedLengthSerializer(mod.toByteArray().size)
     }
 
     override fun getMyId(): Int {
@@ -129,6 +129,8 @@ private class DummyResourcePool: DummyArithmeticResourcePool {
 }
 
 private class DummyNetwork: Network {
+    var lastSentData: ByteArray? = null
+
     override fun init(conf: NetworkConfiguration?, channelAmount: Int) {
     }
 
@@ -136,10 +138,11 @@ private class DummyNetwork: Network {
     }
 
     override fun send(channelId: Int, partyId: Int, data: ByteArray?) {
+        lastSentData = data
     }
 
     override fun receive(channelId: Int, partyId: Int): ByteArray {
-        return ByteArray(0)
+        return lastSentData!!
     }
 
     override fun close() {
