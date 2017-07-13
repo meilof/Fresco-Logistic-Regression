@@ -24,6 +24,10 @@ interface Expression {
     }
 }
 
+fun sqrt(expr: Expression): Expression {
+    return SquareRoot(expr)
+}
+
 class Add(val left: Expression, val right: Expression) : Expression {
     override fun build(builder: ProtocolBuilderNumeric): Computation<SInt> {
         return builder.numeric().add(left.build(builder), right.build(builder))
@@ -46,5 +50,11 @@ class Divide(val left: Expression, val right: Expression) : Expression {
     override fun build(builder: ProtocolBuilderNumeric): Computation<SInt> {
         return builder.advancedNumeric().div(left.build(builder), right.build(builder))
     }
+}
 
+class SquareRoot(val expr: Expression) : Expression {
+    override fun build(builder: ProtocolBuilderNumeric): Computation<SInt> {
+        return builder.advancedNumeric().sqrt(expr.build(builder),
+                builder.basicNumericFactory.maxBitLength)
+    }
 }

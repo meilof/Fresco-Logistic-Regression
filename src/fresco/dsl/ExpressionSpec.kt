@@ -35,5 +35,8 @@ class ExpressionSpec : Spek({
     it("supports adding a known and a closed integer") {
         expect(evaluate(k3 + c4)).to.equal(7)
     }
-})
 
+    it("support taking square root") {
+        expect(evaluate(sqrt(c4))).to.equal(2)
+    }
+})
