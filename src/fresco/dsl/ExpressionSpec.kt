@@ -28,6 +28,10 @@ class ExpressionSpec : Spek({
         expect(evaluate(k2 * k3)).to.equal(6)
     }
 
+    it("supports divisions") {
+        expect(evaluate(c4 / k2)).to.equal(2)
+    }
+
     it("supports adding a known and a closed integer") {
         expect(evaluate(k3 + c4)).to.equal(7)
     }

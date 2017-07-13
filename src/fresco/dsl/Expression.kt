@@ -18,6 +18,10 @@ interface Expression {
     operator fun times(other: Expression): Expression {
         return Multiply(this, other)
     }
+
+    operator fun div(other: Expression): Expression {
+        return Divide(this, other)
+    }
 }
 
 class Add(val left: Expression, val right: Expression) : Expression {
@@ -36,4 +40,11 @@ class Multiply(val left: Expression, val right: Expression) : Expression {
     override fun build(builder: ProtocolBuilderNumeric): Computation<SInt> {
         return builder.numeric().mult(left.build(builder), right.build(builder))
     }
+}
+
+class Divide(val left: Expression, val right: Expression) : Expression {
+    override fun build(builder: ProtocolBuilderNumeric): Computation<SInt> {
+        return builder.advancedNumeric().div(left.build(builder), right.build(builder))
+    }
+
 }
