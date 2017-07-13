@@ -19,7 +19,7 @@ interface Expression {
     }
 }
 
-class SecureInt(val value: Int): Expression {
+class KnownInt(val value: Int): Expression {
     override fun build(builder: ProtocolBuilderNumeric): Computation<SInt> {
         return builder.numeric().known(BigInteger.valueOf(value.toLong()))
     }

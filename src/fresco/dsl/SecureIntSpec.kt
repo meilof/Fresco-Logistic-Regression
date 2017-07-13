@@ -6,9 +6,9 @@ import org.jetbrains.spek.api.dsl.it
 
 class SecureIntSpec : Spek({
 
-    val s1 = SecureInt(1)
-    val s2 = SecureInt(2)
-    val s3 = SecureInt(3)
+    val s1 = KnownInt(1)
+    val s2 = KnownInt(2)
+    val s3 = KnownInt(3)
 
     it("can be evaluated as a Fresco computation") {
         expect(evaluate(s1)).to.equal(1)
