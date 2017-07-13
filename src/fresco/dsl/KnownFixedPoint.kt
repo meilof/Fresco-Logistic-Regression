@@ -4,7 +4,7 @@ import dk.alexandra.fresco.framework.Computation
 import dk.alexandra.fresco.framework.builder.ProtocolBuilderNumeric
 import dk.alexandra.fresco.framework.value.SInt
 
-open class FixedPoint(val underlyingInt: IntExpression) : FixedPointExpression {
+open class FixedPoint(override val underlyingInt: IntExpression) : FixedPointExpression {
     override fun build(builder: ProtocolBuilderNumeric): Computation<SInt> {
         return underlyingInt.build(builder)
     }
