@@ -3,8 +3,9 @@ package fresco.dsl
 import java.math.BigInteger
 
 private typealias Bits = Int
-private val fixedPointPrecision: Bits = 8
-private val fixedPointMultiplier = Math.pow(2.0, fixedPointPrecision.toDouble())
+private val precision: Bits = 8
+private val multiplier = Math.pow(2.0, precision.toDouble())
+private val knownMultiplier = KnownInt(multiplier.toInt())
 
 interface FixedPointExpression : Expression {
     val underlyingInt: IntExpression
@@ -12,12 +13,24 @@ interface FixedPointExpression : Expression {
     operator fun plus(other: FixedPointExpression): FixedPointExpression {
         return FixedPoint(this.underlyingInt + other.underlyingInt)
     }
+
+    operator fun minus(other: FixedPointExpression): FixedPointExpression {
+        return FixedPoint(this.underlyingInt - other.underlyingInt)
+    }
+
+    operator fun times(other: FixedPointExpression): FixedPointExpression {
+        return FixedPoint((this.underlyingInt * other.underlyingInt) / knownMultiplier)
+    }
+
+    operator fun div(other: FixedPointExpression): FixedPointExpression {
+        return FixedPoint((this.underlyingInt / other.underlyingInt) * knownMultiplier)
+    }
 }
 
 fun Double.toFixedPoint(): BigInteger {
-    return BigInteger.valueOf((this * fixedPointMultiplier).toLong())
+    return BigInteger.valueOf((this * multiplier).toLong())
 }
 
 fun BigInteger.asFixedPoint(): Double {
-    return this.toDouble() / fixedPointMultiplier
+    return this.toDouble() / multiplier
 }
