@@ -4,7 +4,7 @@ import com.winterbe.expekt.expect
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.it
 
-class ExpressionSpec : Spek({
+class IntExpressionSpec : Spek({
 
     val k1 = KnownInt(1)
     val k2 = KnownInt(2)

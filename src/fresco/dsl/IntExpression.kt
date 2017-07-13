@@ -4,55 +4,55 @@ import dk.alexandra.fresco.framework.Computation
 import dk.alexandra.fresco.framework.builder.ProtocolBuilderNumeric
 import dk.alexandra.fresco.framework.value.SInt
 
-interface Expression {
+interface IntExpression {
     fun build(builder: ProtocolBuilderNumeric): Computation<SInt>
 
-    operator fun plus(other: Expression): Expression {
+    operator fun plus(other: IntExpression): IntExpression {
         return Add(this, other)
     }
 
-    operator fun minus(other: Expression): Expression {
+    operator fun minus(other: IntExpression): IntExpression {
         return Subtract(this, other)
     }
 
-    operator fun times(other: Expression): Expression {
+    operator fun times(other: IntExpression): IntExpression {
         return Multiply(this, other)
     }
 
-    operator fun div(other: Expression): Expression {
+    operator fun div(other: IntExpression): IntExpression {
         return Divide(this, other)
     }
 }
 
-fun sqrt(expr: Expression): Expression {
+fun sqrt(expr: IntExpression): IntExpression {
     return SquareRoot(expr)
 }
 
-class Add(val left: Expression, val right: Expression) : Expression {
+class Add(val left: IntExpression, val right: IntExpression) : IntExpression {
     override fun build(builder: ProtocolBuilderNumeric): Computation<SInt> {
         return builder.numeric().add(left.build(builder), right.build(builder))
     }
 }
 
-class Subtract(val left: Expression, val right: Expression) : Expression {
+class Subtract(val left: IntExpression, val right: IntExpression) : IntExpression {
     override fun build(builder: ProtocolBuilderNumeric): Computation<SInt> {
         return builder.numeric().sub(left.build(builder), right.build(builder))
     }
 }
 
-class Multiply(val left: Expression, val right: Expression) : Expression {
+class Multiply(val left: IntExpression, val right: IntExpression) : IntExpression {
     override fun build(builder: ProtocolBuilderNumeric): Computation<SInt> {
         return builder.numeric().mult(left.build(builder), right.build(builder))
     }
 }
 
-class Divide(val left: Expression, val right: Expression) : Expression {
+class Divide(val left: IntExpression, val right: IntExpression) : IntExpression {
     override fun build(builder: ProtocolBuilderNumeric): Computation<SInt> {
         return builder.advancedNumeric().div(left.build(builder), right.build(builder))
     }
 }
 
-class SquareRoot(val expr: Expression) : Expression {
+class SquareRoot(val expr: IntExpression) : IntExpression {
     override fun build(builder: ProtocolBuilderNumeric): Computation<SInt> {
         return builder.advancedNumeric().sqrt(expr.build(builder),
                 builder.basicNumericFactory.maxBitLength)
