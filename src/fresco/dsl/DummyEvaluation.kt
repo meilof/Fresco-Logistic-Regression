@@ -26,17 +26,17 @@ import java.util.logging.Level
 private val mod = BigInteger("6703903964971298549787012499123814115273848577471136527425966013026501536706464354255445443244279389455058889493431223951165286470575994074291745908195329")
 private val maxBitLength = 200
 
-fun evaluate(i: SecureInt): Int {
+fun evaluate(expression: Expression): Int {
     val configuration = DummySCEConfiguration()
     val suite = DummyProtocolSuiteConfiguration()
     val engine = SCEFactory.getSCEFromConfiguration(configuration, suite)
-    val result = engine.runApplication(DummyApplication(i), DummyResourcePool())
+    val result = engine.runApplication(DummyApplication(expression), DummyResourcePool())
     return result.toInt()
 }
 
-private class DummyApplication(val i: SecureInt): Application<BigInteger, ProtocolBuilderNumeric.SequentialNumericBuilder> {
+private class DummyApplication(val expression: Expression): Application<BigInteger, ProtocolBuilderNumeric.SequentialNumericBuilder> {
     override fun prepareApplication(builder: ProtocolBuilderNumeric.SequentialNumericBuilder): Computation<BigInteger> {
-        val computation = i.build(builder)
+        val computation = expression.build(builder)
         val open = builder.numeric().open(computation)
         return open
     }
