@@ -4,9 +4,7 @@ import dk.alexandra.fresco.framework.Computation
 import dk.alexandra.fresco.framework.builder.ProtocolBuilderNumeric
 import dk.alexandra.fresco.framework.value.SInt
 
-interface IntExpression {
-    fun build(builder: ProtocolBuilderNumeric): Computation<SInt>
-
+interface IntExpression : Expression {
     operator fun plus(other: IntExpression): IntExpression {
         return Add(this, other)
     }

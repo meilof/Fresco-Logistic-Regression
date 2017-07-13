@@ -27,14 +27,22 @@ private val mod = BigInteger("67039039649712985497870124991238141152738485774711
 private val maxBitLength = 200
 
 fun evaluate(expression: IntExpression): Int {
+    return evaluate(expression as Expression).toInt()
+}
+
+fun evaluate(expression: FixedPointExpression): Double {
+    return evaluate(expression as Expression).asFixedPoint()
+}
+
+private fun evaluate(expression: Expression): BigInteger {
     val configuration = DummySCEConfiguration()
     val suite = DummyProtocolSuiteConfiguration()
     val engine = SCEFactory.getSCEFromConfiguration(configuration, suite)
     val result = engine.runApplication(DummyApplication(expression), DummyResourcePool())
-    return result.toInt()
+    return result
 }
 
-private class DummyApplication(val expression: IntExpression): Application<BigInteger, ProtocolBuilderNumeric.SequentialNumericBuilder> {
+private class DummyApplication(val expression: Expression): Application<BigInteger, ProtocolBuilderNumeric.SequentialNumericBuilder> {
     override fun prepareApplication(builder: ProtocolBuilderNumeric.SequentialNumericBuilder): Computation<BigInteger> {
         val computation = expression.build(builder)
         val open = builder.numeric().open(computation)
