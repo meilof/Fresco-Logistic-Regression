@@ -2,6 +2,8 @@ package fresco
 
 import com.winterbe.expekt.expect
 import fresco.dsl.evaluate
+import fresco.dsl.matrices.Vector
+import fresco.dsl.matrices.matrixFromVectors
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.it
 

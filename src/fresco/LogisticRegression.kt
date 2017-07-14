@@ -3,6 +3,7 @@ package fresco
 import fresco.dsl.FixedPointExpression
 import fresco.dsl.KnownFixedPoint
 import fresco.dsl.evaluate
+import fresco.dsl.matrices.*
 import fresco.dsl.sqrt
 
 class LogisticRegression {

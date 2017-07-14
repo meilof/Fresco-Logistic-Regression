@@ -18,6 +18,7 @@ import dk.alexandra.fresco.suite.ProtocolSuite
 import dk.alexandra.fresco.suite.dummy.arithmetic.DummyArithmeticBuilderFactory
 import dk.alexandra.fresco.suite.dummy.arithmetic.DummyArithmeticFactory
 import dk.alexandra.fresco.suite.dummy.arithmetic.DummyArithmeticResourcePool
+import fresco.dsl.matrices.MatrixType
 import java.math.BigInteger
 import java.security.SecureRandom
 import java.util.*
@@ -35,7 +36,7 @@ fun evaluate(expression: FixedPointExpression): Double {
     return evaluate(expression as Expression).asFixedPoint()
 }
 
-fun evaluate(expression: fresco.MatrixType): plain.MatrixType {
+fun evaluate(expression: MatrixType): plain.MatrixType {
     val rows = expression.numberOfRows
     val columns = expression.numberOfColumns
     var elements = Array(rows, { Array(columns, { 0.0 }) })

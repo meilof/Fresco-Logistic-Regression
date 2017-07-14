@@ -1,4 +1,4 @@
-package fresco
+package fresco.dsl.matrices
 
 import fresco.dsl.ClosedFixedPoint
 import fresco.dsl.FixedPointExpression

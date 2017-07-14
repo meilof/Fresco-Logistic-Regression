@@ -1,4 +1,4 @@
-package fresco
+package fresco.dsl.matrices
 
 import com.winterbe.expekt.expect
 import fresco.dsl.KnownFixedPoint
