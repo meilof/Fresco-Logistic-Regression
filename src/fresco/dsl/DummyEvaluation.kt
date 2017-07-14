@@ -35,6 +35,18 @@ fun evaluate(expression: FixedPointExpression): Double {
     return evaluate(expression as Expression).asFixedPoint()
 }
 
+fun evaluate(expression: fresco.logisticRegression.MatrixType): logisticRegression.MatrixType {
+    val rows = expression.numberOfRows
+    val columns = expression.numberOfColumns
+    var elements = Array(rows, { Array(columns, { 0.0 }) })
+    for (row in 0 until rows) {
+        for (col in 0 until columns) {
+            elements[row][col] = evaluate(expression[row, col])
+        }
+    }
+    return logisticRegression.Matrix(*elements)
+}
+
 private fun evaluate(expression: Expression): BigInteger {
     Reporter.setLevel(WARNING)
     val configuration = DummySCEConfiguration()
