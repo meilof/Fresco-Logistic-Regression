@@ -27,6 +27,10 @@ interface FixedPointExpression : Expression {
     }
 }
 
+fun sqrt(value: FixedPointExpression): FixedPointExpression {
+    return FixedPoint(sqrt(value.underlyingInt * knownMultiplier))
+}
+
 fun Double.toFixedPoint(): BigInteger {
     return BigInteger.valueOf((this * multiplier).toLong())
 }

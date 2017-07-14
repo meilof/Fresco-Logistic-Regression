@@ -23,4 +23,8 @@ class FixedPointExpressionSpec : Spek({
     it("supports division") {
         expect(evaluate(k2 / k1)).to.be.closeTo(2.0, delta = 0.01)
     }
+
+    it("supports square root") {
+        expect(evaluate(sqrt(k2))).to.be.closeTo(Math.sqrt(2.22), delta = 0.01)
+    }
 })
