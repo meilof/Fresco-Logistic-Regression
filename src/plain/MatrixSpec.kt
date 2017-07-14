@@ -43,10 +43,6 @@ class MatrixSpec : Spek({
     }
 
     it("can return a row") {
-        val matrix = Matrix(
-                arrayOf(1.0, 2.0),
-                arrayOf(3.0, 4.0)
-        )
         val firstRow = matrix.row(0)
         val expected = Vector(1.0, 2.0)
         expect(firstRow).to.equal(expected)

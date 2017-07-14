@@ -45,10 +45,6 @@ class MatrixSpec : Spek({
     }
 
     it("can return a row") {
-        val matrix = Matrix(
-                arrayOf(KnownFixedPoint(1.0), KnownFixedPoint(2.0)),
-                arrayOf(KnownFixedPoint(3.0), KnownFixedPoint(4.0))
-        )
         val firstRow = matrix.row(0)
         val expected = Vector(1.0, 2.0)
         expect(evaluate(firstRow)).to.equal(evaluate(expected))
