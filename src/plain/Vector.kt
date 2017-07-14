@@ -1,4 +1,4 @@
-package logisticRegression
+package plain
 
 class Vector(vararg val elements: Double): MatrixType() {
     override val numberOfRows = 1

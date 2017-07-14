@@ -1,4 +1,4 @@
-package logisticRegression
+package plain
 
 class LogisticRegression {
     fun hessian(matrix: MatrixType): MatrixType {
@@ -65,7 +65,7 @@ class LogisticRegression {
     }
 
     fun likelihood(v1: Vector, v2: Vector): Double {
-        val exponential = exp(- (v1 * v2)[0])
+        val exponential = exp(-(v1 * v2)[0])
         return 1.0 / (1.0 + exponential)
     }
 

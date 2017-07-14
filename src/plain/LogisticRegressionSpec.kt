@@ -1,4 +1,4 @@
-package logisticRegression
+package plain
 
 import com.winterbe.expekt.expect
 import org.jetbrains.spek.api.Spek
@@ -31,7 +31,7 @@ class LogisticRegressionSpec: Spek({
         )
         val expected = LowerTriangularMatrix(Matrix(
                 arrayOf(Math.sqrt(2.0), 0.0),
-                arrayOf(1.0/ Math.sqrt(2.0), Math.sqrt(3.0 / 2.0))
+                arrayOf(1.0 / Math.sqrt(2.0), Math.sqrt(3.0 / 2.0))
         ))
         expect(logistic.choleskyDecomposition(matrix)).to.equal(expected)
     }

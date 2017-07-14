@@ -1,4 +1,4 @@
-package logisticRegression
+package plain
 
 import com.winterbe.expekt.expect
 import org.jetbrains.spek.api.Spek

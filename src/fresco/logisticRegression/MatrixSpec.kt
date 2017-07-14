@@ -99,7 +99,7 @@ class MatrixSpec : Spek({
                 arrayOf(KnownFixedPoint(6.0), KnownFixedPoint(8.0)),
                 arrayOf(KnownFixedPoint(10.0), KnownFixedPoint(12.0))
         )
-        val expected = logisticRegression.Matrix(
+        val expected = plain.Matrix(
                 arrayOf(1.0, 2.0),
                 arrayOf(3.0, 4.0),
                 arrayOf(5.0, 6.0)
@@ -126,7 +126,7 @@ class MatrixSpec : Spek({
                 arrayOf(KnownFixedPoint(6.0), KnownFixedPoint(8.0)),
                 arrayOf(KnownFixedPoint(10.0), KnownFixedPoint(12.0))
         )
-        val expected = logisticRegression.Matrix(
+        val expected = plain.Matrix(
                 arrayOf(3.0, 6.0),
                 arrayOf(9.0, 12.0),
                 arrayOf(15.0, 18.0)
@@ -158,7 +158,7 @@ class MatrixSpec : Spek({
         }
 
         it("returns the correct matrix") {
-            val expected = logisticRegression.UpperTriangularMatrix(logisticRegression.Matrix(
+            val expected = plain.UpperTriangularMatrix(plain.Matrix(
                     arrayOf(1.0, 2.0),
                     arrayOf(0.0, 1.0)
             ))
@@ -177,7 +177,7 @@ class MatrixSpec : Spek({
         }
 
         it("returns the correct matrix") {
-            val expected = logisticRegression.LowerTriangularMatrix(logisticRegression.Matrix(
+            val expected = plain.LowerTriangularMatrix(plain.Matrix(
                     arrayOf(1.0, 0.0),
                     arrayOf(2.0, 1.0)
             ))
@@ -217,7 +217,7 @@ class MatrixSpec : Spek({
         val v1 = Vector(1.0, 2.0, 3.0, 4.0)
         val v2 = Vector(11.0, 22.0, 33.0, 44.0)
         val m = matrixFromVectors(v1, v2)
-        val expected = logisticRegression.Matrix(
+        val expected = plain.Matrix(
                 arrayOf(1.0, 2.0, 3.0, 4.0),
                 arrayOf(11.0, 22.0, 33.0, 44.0)
         )
@@ -225,7 +225,7 @@ class MatrixSpec : Spek({
     }
 
     it("can create an identity matrix") {
-        val expected = logisticRegression.Matrix(
+        val expected = plain.Matrix(
                 arrayOf(1.0, 0.0, 0.0),
                 arrayOf(0.0, 1.0, 0.0),
                 arrayOf(0.0, 0.0, 1.0)
