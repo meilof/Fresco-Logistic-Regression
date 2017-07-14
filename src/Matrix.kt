@@ -1,3 +1,5 @@
+package logisticRegression
+
 abstract class MatrixType {
     abstract val numberOfColumns: Int
     abstract val numberOfRows: Int

@@ -1,3 +1,4 @@
+package logisticRegression
 
 val numIterations = 40
 
