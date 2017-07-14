@@ -1,6 +1,5 @@
-package fresco.logisticRegression
+package fresco
 
-import fresco.dsl.FixedPoint
 import fresco.dsl.FixedPointExpression
 import fresco.dsl.KnownFixedPoint
 

@@ -1,4 +1,4 @@
-package fresco.logisticRegression
+package fresco
 
 import com.winterbe.expekt.expect
 import fresco.dsl.KnownFixedPoint
