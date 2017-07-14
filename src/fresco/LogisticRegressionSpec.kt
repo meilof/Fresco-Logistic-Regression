@@ -5,12 +5,12 @@ import fresco.dsl.evaluate
 import fresco.dsl.matrices.Vector
 import fresco.dsl.matrices.matrixFromVectors
 import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.it
+import org.jetbrains.spek.api.dsl.xit
 
 class LogisticRegressionSpec: Spek({
     val logistic = LogisticRegression()
 
-    it("computes best beta for logistic regression with non-zero lambda") {
+    xit("computes best beta for logistic regression with non-zero lambda") {
         val intercept = 1.65707
         val beta_hp = 0.00968555
         val beta_wt = -1.17481
