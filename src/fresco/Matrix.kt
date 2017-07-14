@@ -77,55 +77,6 @@ abstract class MatrixType {
             throw IllegalArgumentException("these matrices are not of the same shape")
         }
     }
-
-    override fun equals(other: Any?): Boolean {
-        if (other !is MatrixType) return false
-        if (numberOfRows != other.numberOfRows) return false
-        if (numberOfColumns != other.numberOfColumns) return false
-        for (row in 0 until numberOfRows) {
-            @Suppress("LoopToCallChain")
-            for (column in 0 until numberOfColumns) {
-                if (this[row, column] != other[row, column]) {
-                    return false
-                }
-            }
-        }
-        return true
-    }
-
-//    fun isCloseTo(other: MatrixType, delta: Double): Boolean {
-//        assertOfSameShape(this, other)
-//        for (row in 0 until numberOfRows) {
-//            for (column in 0 until numberOfColumns) {
-//                if (Math.abs(this[row, column] - other[row, column]) > delta) {
-//                    return false
-//                }
-//            }
-//        }
-//        return true
-//    }
-
-    override fun hashCode(): Int {
-        var result = numberOfColumns
-        result = 31 * result + numberOfRows
-        return result
-    }
-
-    override fun toString(): String {
-        var result = ""
-        for (row in 0 until numberOfRows) {
-            if (row != 0) {
-                result += "\n"
-            }
-            for (column in 0 until numberOfColumns) {
-                if (column != 0) {
-                    result += ", "
-                }
-                result += this[row, column]
-            }
-        }
-        return result
-    }
 }
 
 class Matrix(vararg val elements: Array<FixedPointExpression>): MatrixType() {

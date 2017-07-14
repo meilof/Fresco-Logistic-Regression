@@ -185,34 +185,6 @@ class MatrixSpec : Spek({
         }
     }
 
-//    it("can determine whether it is close to another matrix") {
-//        val closeMatrix = Matrix(
-//                arrayOf(1.25, 2.0),
-//                arrayOf(3.0, 4.0),
-//                arrayOf(5.0, 6.0)
-//        )
-//        val notCloseMatrix = Matrix(
-//                arrayOf(1.3, 2.0),
-//                arrayOf(3.0, 4.0),
-//                arrayOf(5.0, 6.0)
-//        )
-//        expect(matrix.isCloseTo(closeMatrix, 0.25)).to.be.`true`
-//        expect(matrix.isCloseTo(notCloseMatrix, 0.25)).to.be.`false`
-//    }
-
-//    it("throws when comparing matrices of different shapes") {
-//        val closeMatrix = Matrix(
-//                arrayOf(1.25, 2.0),
-//                arrayOf(3.0, 4.0)
-//        )
-//        try {
-//            matrix.isCloseTo(closeMatrix, 0.25)
-//            fail()
-//        } catch (exception: IllegalArgumentException) {
-//            // success
-//        }
-//    }
-
     it("can create a matrix from multiple vectors") {
         val v1 = Vector(1.0, 2.0, 3.0, 4.0)
         val v2 = Vector(11.0, 22.0, 33.0, 44.0)
