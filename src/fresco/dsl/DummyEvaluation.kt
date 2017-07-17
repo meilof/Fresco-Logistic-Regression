@@ -22,6 +22,8 @@ import fresco.dsl.matrices.MatrixType
 import java.math.BigInteger
 import java.security.SecureRandom
 import java.util.*
+import java.util.concurrent.LinkedTransferQueue
+import java.util.concurrent.TransferQueue
 import java.util.logging.Level
 import java.util.logging.Level.WARNING
 
@@ -151,23 +153,44 @@ private class DummyResourcePool: DummyArithmeticResourcePool {
     }
 }
 
-private class DummyNetwork: Network {
-    var lastSentData: ByteArray? = null
+private class DummyNetwork : dk.alexandra.fresco.framework.network.Network {
+
+    private val queues = HashMap<Int, MutableMap<Int, TransferQueue<ByteArray>>>()
 
     override fun init(conf: NetworkConfiguration?, channelAmount: Int) {
+        println("init")
     }
 
     override fun connect(timeoutMillis: Int) {
+        println("connect")
     }
 
     override fun send(channelId: Int, partyId: Int, data: ByteArray?) {
-        lastSentData = data
+        println("send ${channelId} ${partyId} ${data}")
+        if (!queues.contains(channelId)) {
+            queues[channelId] = mutableMapOf()
+        }
+        if (!queues[channelId]!!.contains(partyId)) {
+            queues[channelId]!![partyId] = LinkedTransferQueue()
+        }
+        queues[channelId]!![partyId]!!.put(data)
     }
 
     override fun receive(channelId: Int, partyId: Int): ByteArray {
-        return lastSentData!!
+        println("receive ${channelId} ${partyId}")
+        if (!queues.contains(channelId)) {
+            queues[channelId] = mutableMapOf()
+        }
+        if (!queues[channelId]!!.contains(partyId)) {
+            queues[channelId]!![partyId] = LinkedTransferQueue()
+        }
+        val result = queues[channelId]!![partyId]!!.take()
+        println("          -> ${result}")
+        return result
     }
 
     override fun close() {
+        println("close")
     }
 }
+
