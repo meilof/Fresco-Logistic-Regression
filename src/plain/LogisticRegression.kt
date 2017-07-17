@@ -90,14 +90,44 @@ class LogisticRegression {
         return beta + r
     }
 
-    fun fitLogisticModel(X: MatrixType, Y: Vector,
+    fun fitLogisticModel(Xs: Array<MatrixType>, Ys: Array<Vector>,
                          lambda: Double = 0.0,
                          numberOfIterations: Int = 10): Vector {
-        val I = IdentityMatrix(X.numberOfColumns)
-        val H = hessian(X) - lambda * I
-        var beta = Vector(*DoubleArray(X.numberOfColumns, { 0.0 }))
+        var H: MatrixType? = null
+        for (X in Xs) {
+            val localH = hessian(X)
+            if (H == null) {
+                H = localH
+            } else {
+                H += localH
+            }
+        }
+
+        if (H == null) {
+            throw IllegalArgumentException("input must not be empty")
+        }
+
+        val I = IdentityMatrix(H.numberOfColumns)
+        H -= lambda * I
+
+        var beta = Vector(*DoubleArray(H.numberOfColumns, { 0.0 }))
         for (i in 0 until numberOfIterations) {
-            var lprime = logLikelihoodPrime(X, Y, beta)
+            var lprime: Vector? = null
+            for (party in 0 until Xs.size) {
+                val X = Xs[party]
+                val Y = Ys[party]
+                val localLPrime = logLikelihoodPrime(X, Y, beta)
+                if (lprime == null) {
+                    lprime = localLPrime
+                } else {
+                    lprime += localLPrime
+                }
+            }
+
+            if (lprime == null) {
+                throw IllegalArgumentException("does not happen")
+            }
+
             lprime -= (lambda * beta)
             beta = updateLearnedModel(H, beta, lprime)
         }

@@ -4,7 +4,9 @@ import fresco.dsl.FixedPointExpression
 import fresco.dsl.KnownFixedPoint
 import fresco.dsl.evaluate
 import fresco.dsl.matrices.*
+import fresco.dsl.matrices.Vector
 import fresco.dsl.sqrt
+import java.util.*
 
 class LogisticRegression {
     fun hessian(matrix: MatrixType): MatrixType {
@@ -12,6 +14,7 @@ class LogisticRegression {
     }
 
     fun choleskyDecomposition(matrix: MatrixType): LowerTriangularMatrix {
+        println("${Date().time} ------- cholesky")
         val d = matrix.numberOfRows
         val a = Array(d, {
             row -> Array(d, { column -> matrix[row, column] })
@@ -38,6 +41,7 @@ class LogisticRegression {
      */
     fun forwardSubstitution(L: LowerTriangularMatrix, b: Vector):
             Vector {
+        println("${Date().time} ------- forward substitution")
         val n = b.size
         val y = Array<FixedPointExpression>(n, { KnownFixedPoint(0.0) })
         for (i in 0 until n) {
@@ -58,6 +62,7 @@ class LogisticRegression {
      */
     fun backSubstitution(U: UpperTriangularMatrix, b: Vector):
             Vector {
+        println("${Date().time} ------- backward substitution")
         val n = b.size
         val x = Array<FixedPointExpression>(n, { KnownFixedPoint(0.0) })
         for (i in (0 until n).reversed()) {
@@ -71,6 +76,7 @@ class LogisticRegression {
     }
 
     fun likelihood(v1: Vector, v2: Vector): FixedPointExpression {
+        println("${Date().time} ------- likelihood")
         val minusv1v2 = (v1 * v2)[0]
         val exponential = Math.exp(-evaluate(minusv1v2))
         return KnownFixedPoint(1.0 / (1.0 + exponential))
@@ -78,6 +84,7 @@ class LogisticRegression {
 
     fun logLikelihoodPrime(
             x: MatrixType, y: Vector, beta: Vector): Vector {
+        println("${Date().time} ------- log likelihood prime")
         val result = Array<FixedPointExpression>(beta.size, { KnownFixedPoint(0.0) })
         for (k in 0 until beta.size) {
             for (i in 0 until x.numberOfRows) {
@@ -91,23 +98,56 @@ class LogisticRegression {
 
     fun updateLearnedModel(H: MatrixType, beta: Vector, l: Vector):
             Vector {
+        println("${Date().time} ------- update learned model")
         val L = choleskyDecomposition(-1.0 * H)
         val y = forwardSubstitution(L, l)
         val r = backSubstitution(L.transpose(), y)
         return beta + r
     }
 
-    fun fitLogisticModel(X: MatrixType, Y: Vector,
+    fun fitLogisticModel(Xs: Array<MatrixType>, Ys: Array<Vector>,
                          lambda: Double = 0.0,
                          numberOfIterations: Int = 10): Vector {
-        val I = IdentityMatrix(X.numberOfColumns)
-        val H = hessian(X) - lambda * I
-        var beta = Vector(*DoubleArray(X.numberOfColumns, { 0.0 }))
+        var H: MatrixType? = null
+        for (party in 0 until Xs.size) {
+            val localH = hessian(Xs[party])
+            if (H == null) {
+                H = localH
+            } else {
+                H += localH
+            }
+        }
+
+        if (H == null) {
+            throw IllegalArgumentException("input must not be empty")
+        }
+
+        val I = IdentityMatrix(H.numberOfColumns)
+        H -= lambda * I
+
+        var beta = Vector(*DoubleArray(H.numberOfColumns, { 0.0 }))
         for (i in 0 until numberOfIterations) {
-            var lprime = logLikelihoodPrime(X, Y, beta)
+            println("${Date().time} ------- ITERATION: ${i} --------")
+            var lprime: Vector? = null
+            for (party in 0 until Xs.size) {
+                val X = Xs[party]
+                val Y = Ys[party]
+                val localLPrime = logLikelihoodPrime(X, Y, beta)
+                if (lprime == null) {
+                    lprime = localLPrime
+                } else {
+                    lprime += localLPrime
+                }
+            }
+
+            if (lprime == null) {
+                throw IllegalArgumentException("does not happen")
+            }
+
             lprime -= (lambda * beta)
             beta = updateLearnedModel(H, beta, lprime)
         }
+        println("${Date().time} ------- DONE")
         return beta
     }
 }
