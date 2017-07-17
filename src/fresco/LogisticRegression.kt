@@ -96,25 +96,25 @@ class LogisticRegression {
         return Vector(*result)
     }
 
-    fun updateLearnedModel(H: MatrixType, beta: Vector, l: Vector):
+    fun updateLearnedModel(L: LowerTriangularMatrix, beta: Vector, l: Vector):
             Vector {
         println("${Date().time} ------- update learned model")
-        val L = choleskyDecomposition(-1.0 * H)
         val y = forwardSubstitution(L, l)
         val r = backSubstitution(L.transpose(), y)
         return beta + r
     }
 
-    fun fitLogisticModel(Xs: Array<MatrixType>, Ys: Array<Vector>,
+    fun fitLogisticModel(Xs: Array<plain.MatrixType>,
+                         Ys: Array<plain.Vector>,
                          lambda: Double = 0.0,
                          numberOfIterations: Int = 10): Vector {
         var H: MatrixType? = null
-        for (party in 0 until Xs.size) {
-            val localH = hessian(Xs[party])
+        for (party in 1 .. Xs.size) {
+            val localH = plain.LogisticRegression().hessian(Xs[party - 1])
             if (H == null) {
-                H = localH
+                H = closeMatrix(localH, party)
             } else {
-                H += localH
+                H += closeMatrix(localH, party)
             }
         }
 
@@ -124,19 +124,21 @@ class LogisticRegression {
 
         val I = IdentityMatrix(H.numberOfColumns)
         H -= lambda * I
+        val L = choleskyDecomposition(-1.0 * H)
 
         var beta = Vector(*DoubleArray(H.numberOfColumns, { 0.0 }))
         for (i in 0 until numberOfIterations) {
             println("${Date().time} ------- ITERATION: ${i} --------")
             var lprime: Vector? = null
-            for (party in 0 until Xs.size) {
-                val X = Xs[party]
-                val Y = Ys[party]
-                val localLPrime = logLikelihoodPrime(X, Y, beta)
+            for (party in 1 .. Xs.size) {
+                val X = Xs[party - 1]
+                val Y = Ys[party - 1]
+                val openBeta = evaluate(beta)
+                val localLPrime = plain.LogisticRegression().logLikelihoodPrime(X, Y, openBeta)
                 if (lprime == null) {
-                    lprime = localLPrime
+                    lprime = closeVector(localLPrime, party)
                 } else {
-                    lprime += localLPrime
+                    lprime += closeVector(localLPrime, party)
                 }
             }
 
@@ -145,7 +147,7 @@ class LogisticRegression {
             }
 
             lprime -= (lambda * beta)
-            beta = updateLearnedModel(H, beta, lprime)
+            beta = updateLearnedModel(L, beta, lprime)
         }
         println("${Date().time} ------- DONE")
         return beta
