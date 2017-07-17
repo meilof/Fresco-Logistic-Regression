@@ -38,15 +38,33 @@ fun evaluate(expression: FixedPointExpression): Double {
     return evaluate(expression as Expression).asFixedPoint()
 }
 
+fun evaluate(expression: fresco.dsl.matrices.Vector): plain.Vector {
+    println("${ Date().time} --------- START EVALUATE ---------")
+    val size = expression.size
+    var elements = DoubleArray(size, { 0.0 })
+    for (index in 0 until size) {
+        val result = evaluate(expression[index])
+        println("${ Date().time} ---------------------- result: ${result}")
+        elements[index] = result
+    }
+    println("${ Date().time} --------- EVALUATE DONE ---------")
+    return plain.Vector(*elements)
+}
+
 fun evaluate(expression: MatrixType): plain.MatrixType {
+    println("${ Date().time} --------- START EVALUATE ---------")
     val rows = expression.numberOfRows
     val columns = expression.numberOfColumns
     var elements = Array(rows, { Array(columns, { 0.0 }) })
     for (row in 0 until rows) {
         for (col in 0 until columns) {
-            elements[row][col] = evaluate(expression[row, col])
+            println("${ Date().time} --------- evaluate row ${row} col ${col}")
+            val result = evaluate(expression[row, col])
+            elements[row][col] = result
+            println("${ Date().time} ---------------------- result: ${result}")
         }
     }
+    println("${ Date().time} --------- EVALUATE DONE ---------")
     return plain.Matrix(*elements)
 }
 
