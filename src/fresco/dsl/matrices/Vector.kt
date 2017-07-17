@@ -1,6 +1,7 @@
 package fresco.dsl.matrices
 
 import fresco.dsl.ClosedFixedPoint
+import fresco.dsl.FixedPoint
 import fresco.dsl.FixedPointExpression
 import fresco.dsl.KnownFixedPoint
 
@@ -44,4 +45,13 @@ class Vector(vararg val elements: FixedPointExpression): MatrixType() {
 
 operator fun Double.times(vector: Vector): Vector {
     return vector * KnownFixedPoint(this)
+}
+
+fun closeVector(v: plain.Vector, party: Int): Vector {
+    val size = v.size
+    var closed = Array<FixedPoint>(size, { KnownFixedPoint(0.0) })
+    for (index in 0 until size) {
+        closed[index] = ClosedFixedPoint(v[index], party)
+    }
+    return Vector(*closed)
 }

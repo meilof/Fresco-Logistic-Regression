@@ -1,5 +1,6 @@
 package fresco.dsl.matrices
 
+import fresco.dsl.ClosedFixedPoint
 import fresco.dsl.FixedPointExpression
 import fresco.dsl.KnownFixedPoint
 
@@ -77,6 +78,20 @@ abstract class MatrixType {
             throw IllegalArgumentException("these matrices are not of the same shape")
         }
     }
+}
+
+fun closeMatrix(m: plain.MatrixType, party: Int): MatrixType {
+    val rows = m.numberOfRows
+    val columns = m.numberOfColumns
+    val closed = Array(rows, {
+        Array<FixedPointExpression>(columns, { KnownFixedPoint(0.0) })
+    })
+    for (row in 0 until rows) {
+        for (column in 0 until columns) {
+            closed[row][column] = ClosedFixedPoint(m[row, column], party)
+        }
+    }
+    return Matrix(*closed)
 }
 
 class Matrix(vararg val elements: Array<FixedPointExpression>): MatrixType() {
