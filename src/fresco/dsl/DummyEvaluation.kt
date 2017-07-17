@@ -29,6 +29,7 @@ import java.util.logging.Level.WARNING
 
 private val mod = BigInteger("6703903964971298549787012499123814115273848577471136527425966013026501536706464354255445443244279389455058889493431223951165286470575994074291745908195329")
 private val maxBitLength = 200
+private val theNetwork = DummyNetwork()
 
 fun evaluate(expression: IntExpression): Int {
     return evaluate(expression as Expression).toInt()
@@ -159,7 +160,7 @@ private class DummyResourcePool: DummyArithmeticResourcePool {
     }
 
     override fun getNetwork(): Network {
-        return DummyNetwork()
+        return theNetwork
     }
 
     override fun getRandom(): Random {
