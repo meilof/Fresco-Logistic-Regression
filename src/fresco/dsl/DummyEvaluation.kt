@@ -65,7 +65,6 @@ private class DummyApplication(val expression: Expression): Application<BigInteg
     }
 }
 
-
 private class DummySCEConfiguration: SCEConfiguration<ResourcePool> {
     override fun getMyId(): Int {
         return 1
