@@ -185,7 +185,6 @@ private class DummyNetwork : dk.alexandra.fresco.framework.network.Network {
     }
 
     override fun send(channelId: Int, partyId: Int, data: ByteArray?) {
-        println("send ${channelId} ${partyId} ${data}")
         if (!queues.contains(channelId)) {
             queues[channelId] = mutableMapOf()
         }
@@ -196,7 +195,6 @@ private class DummyNetwork : dk.alexandra.fresco.framework.network.Network {
     }
 
     override fun receive(channelId: Int, partyId: Int): ByteArray {
-        println("receive ${channelId} ${partyId}")
         if (!queues.contains(channelId)) {
             queues[channelId] = mutableMapOf()
         }
@@ -204,7 +202,6 @@ private class DummyNetwork : dk.alexandra.fresco.framework.network.Network {
             queues[channelId]!![partyId] = LinkedTransferQueue()
         }
         val result = queues[channelId]!![partyId]!!.take()
-        println("          -> ${result}")
         return result
     }
 
