@@ -22,9 +22,10 @@ class LogisticRegressionSpec: Spek({
                 Xs, Ys, lambda = 1.0, numberOfIterations = 4
         )
 
-        expect(evaluate(beta).isCloseTo(
-                plain.Vector(beta_hp, beta_wt, intercept), 0.01
-        )).to.be.`true`
+        val result = evaluate(beta)
+        val expected = plain.Vector(beta_hp, beta_wt, intercept)
+        println("Result: $result, expected: $expected")
+        expect(result.isCloseTo(expected, 0.01)).to.be.`true`
     }
 })
 
