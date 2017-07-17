@@ -112,9 +112,9 @@ class LogisticRegression {
         for (party in 1 .. Xs.size) {
             val localH = plain.LogisticRegression().hessian(Xs[party - 1])
             if (H == null) {
-                H = closeMatrix(localH, party)
+                H = closeMatrix(localH, 1)
             } else {
-                H += closeMatrix(localH, party)
+                H += closeMatrix(localH, 1)
             }
         }
 
@@ -136,9 +136,9 @@ class LogisticRegression {
                 val openBeta = evaluate(beta)
                 val localLPrime = plain.LogisticRegression().logLikelihoodPrime(X, Y, openBeta)
                 if (lprime == null) {
-                    lprime = closeVector(localLPrime, party)
+                    lprime = closeVector(localLPrime, 1)
                 } else {
-                    lprime += closeVector(localLPrime, party)
+                    lprime += closeVector(localLPrime, 1)
                 }
             }
 
