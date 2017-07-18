@@ -198,7 +198,7 @@ class MatrixSpec : Spek({
                 arrayOf(0.0, 1.0, 0.0),
                 arrayOf(0.0, 0.0, 1.0)
         )
-        expect(evaluate(IdentityMatrix(3) as MatrixType)).to.equal(expected)
+        expect(evaluate(IdentityMatrix(3))).to.equal(expected)
     }
 
     it("can create a closed matrix") {
@@ -208,5 +208,13 @@ class MatrixSpec : Spek({
         val result = evaluate(closeMatrix(plainMatrix, 1))
         expect(result.isCloseTo(plainMatrix, 0.01)).to.be.`true`
     }
-})
 
+    it("can create a zero matrix") {
+        val expected = plain.Matrix(
+                arrayOf(0.0, 0.0, 0.0),
+                arrayOf(0.0, 0.0, 0.0),
+                arrayOf(0.0, 0.0, 0.0)
+        )
+        expect(evaluate(ZeroMatrix(3) as MatrixType)).to.equal(expected)
+    }
+})

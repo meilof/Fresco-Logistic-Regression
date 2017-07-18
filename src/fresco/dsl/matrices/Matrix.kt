@@ -205,6 +205,14 @@ class IdentityMatrix(size: Int): MatrixType() {
     }
 }
 
+class ZeroMatrix(size: Int): MatrixType() {
+    override val numberOfColumns: Int = size
+    override val numberOfRows: Int = size
+    override operator fun get(row: Int, column: Int): FixedPointExpression {
+        return KnownFixedPoint(0.0)
+    }
+}
+
 operator fun Double.times(matrix: MatrixType): MatrixType {
     return matrix * KnownFixedPoint(this)
 }
