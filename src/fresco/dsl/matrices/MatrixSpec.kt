@@ -79,14 +79,14 @@ class MatrixSpec : Spek({
 
     it("can be multiplied by a scalar postfix") {
         val multiplied = matrix * 3.0
-        expect(evaluate(multiplied[0, 0])).to.equal(3.0)
-        expect(evaluate(multiplied[2, 1])).to.equal(18.0)
+        expect(evaluate(multiplied[0, 0])).to.be.closeTo(3.0, delta = 0.01)
+        expect(evaluate(multiplied[2, 1])).to.be.closeTo(18.0, delta = 0.01)
     }
 
     it("can be multiplied by a scalar prefix") {
         val multiplied = 3.0 * matrix
-        expect(evaluate(multiplied[0, 0])).to.equal(3.0)
-        expect(evaluate(multiplied[2, 1])).to.equal(18.0)
+        expect(evaluate(multiplied[0, 0])).to.be.closeTo(3.0, delta = 0.01)
+        expect(evaluate(multiplied[2, 1])).to.be.closeTo(18.0, delta = 0.01)
     }
 
     it("can subtract matrices") {

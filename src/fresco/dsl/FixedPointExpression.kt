@@ -3,7 +3,7 @@ package fresco.dsl
 import java.math.BigInteger
 
 private typealias Bits = Int
-private val precision: Bits = 8
+private val precision: Bits = 16
 private val multiplier = Math.pow(2.0, precision.toDouble())
 private val knownMultiplier = KnownInt(multiplier.toInt())
 
