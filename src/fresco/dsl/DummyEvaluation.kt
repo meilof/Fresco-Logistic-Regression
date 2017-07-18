@@ -7,7 +7,6 @@ import dk.alexandra.fresco.framework.network.Network
 import dk.alexandra.fresco.framework.network.NetworkingStrategy
 import dk.alexandra.fresco.framework.network.SCENetwork
 import dk.alexandra.fresco.framework.network.serializers.BigIntegerSerializer
-import dk.alexandra.fresco.framework.network.serializers.BigIntegerWithFixedLengthSerializer
 import dk.alexandra.fresco.framework.sce.SCEFactory
 import dk.alexandra.fresco.framework.sce.configuration.ProtocolSuiteConfiguration
 import dk.alexandra.fresco.framework.sce.configuration.SCEConfiguration
@@ -20,6 +19,7 @@ import dk.alexandra.fresco.suite.dummy.arithmetic.DummyArithmeticFactory
 import dk.alexandra.fresco.suite.dummy.arithmetic.DummyArithmeticResourcePool
 import fresco.dsl.matrices.MatrixType
 import java.math.BigInteger
+import java.nio.ByteBuffer
 import java.security.SecureRandom
 import java.util.*
 import java.util.concurrent.LinkedTransferQueue
@@ -75,8 +75,17 @@ private fun evaluate(expression: Expression): BigInteger {
     val suite = DummyProtocolSuiteConfiguration()
     val engine = SCEFactory.getSCEFromConfiguration(configuration, suite)
     val result = engine.runApplication(DummyApplication(expression), DummyResourcePool())
-    return result
+    return result.toSigned()
 }
+
+private fun BigInteger.toSigned(): BigInteger {
+    var actual = this.mod(mod)
+    if (actual > mod.div(BigInteger.valueOf(2))) {
+        actual = actual.subtract(mod)
+    }
+    return actual
+}
+
 
 private class DummyApplication(val expression: Expression): Application<BigInteger, ProtocolBuilderNumeric.SequentialNumericBuilder> {
     override fun prepareApplication(builder: ProtocolBuilderNumeric.SequentialNumericBuilder): Computation<BigInteger> {
@@ -148,7 +157,7 @@ private class DummyResourcePool: DummyArithmeticResourcePool {
     }
 
     override fun getSerializer(): BigIntegerSerializer {
-        return BigIntegerWithFixedLengthSerializer(mod.toByteArray().size)
+        return DummySerializer()
     }
 
     override fun getMyId(): Int {
@@ -169,6 +178,16 @@ private class DummyResourcePool: DummyArithmeticResourcePool {
 
     override fun getSecureRandom(): SecureRandom {
         return SecureRandom()
+    }
+}
+
+private class DummySerializer: BigIntegerSerializer {
+    override fun toBytes(bigInteger: BigInteger): ByteArray {
+        return bigInteger.toByteArray()
+    }
+
+    override fun toBigInteger(byteBuffer: ByteBuffer): BigInteger {
+        return BigInteger(byteBuffer.array())
     }
 }
 

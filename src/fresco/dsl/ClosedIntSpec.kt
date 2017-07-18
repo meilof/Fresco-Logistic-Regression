@@ -21,4 +21,8 @@ class ClosedIntSpec : Spek({
         s1.build(builder)
         verify(builder.numeric()).input(BigInteger.valueOf(value.toLong()), party)
     }
+
+    it("can store negative numbers") {
+        expect(evaluate(ClosedInt(-1, party))).to.equal(-1)
+    }
 })
