@@ -5,11 +5,11 @@ import dk.alexandra.fresco.framework.builder.ProtocolBuilderNumeric
 import dk.alexandra.fresco.framework.value.SInt
 import java.math.BigInteger
 
-class ClosedInt(val value: BigInteger, val inputParty: Int) : IntExpression {
+class ClosedInt(val value: BigInteger, val inputParty: Int) : Cached(), IntExpression {
     constructor(value: Int, inputParty: Int) :
             this(BigInteger.valueOf(value.toLong()), inputParty)
 
-    override fun build(builder: ProtocolBuilderNumeric): Computation<SInt> {
+    override fun buildThis(builder: ProtocolBuilderNumeric): Computation<SInt> {
         return builder.numeric().input(BigInteger.valueOf(value.toLong()), inputParty)
     }
 }

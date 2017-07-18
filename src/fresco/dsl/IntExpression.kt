@@ -26,32 +26,32 @@ fun sqrt(expr: IntExpression): IntExpression {
     return SquareRoot(expr)
 }
 
-class Add(val left: IntExpression, val right: IntExpression) : IntExpression {
-    override fun build(builder: ProtocolBuilderNumeric): Computation<SInt> {
+private class Add(val left: IntExpression, val right: IntExpression) : Cached(), IntExpression {
+    override fun buildThis(builder: ProtocolBuilderNumeric): Computation<SInt> {
         return builder.numeric().add(left.build(builder), right.build(builder))
     }
 }
 
-class Subtract(val left: IntExpression, val right: IntExpression) : IntExpression {
-    override fun build(builder: ProtocolBuilderNumeric): Computation<SInt> {
+class Subtract(val left: IntExpression, val right: IntExpression) : Cached(), IntExpression {
+    override fun buildThis(builder: ProtocolBuilderNumeric): Computation<SInt> {
         return builder.numeric().sub(left.build(builder), right.build(builder))
     }
 }
 
-class Multiply(val left: IntExpression, val right: IntExpression) : IntExpression {
-    override fun build(builder: ProtocolBuilderNumeric): Computation<SInt> {
+class Multiply(val left: IntExpression, val right: IntExpression) : Cached(), IntExpression {
+    override fun buildThis(builder: ProtocolBuilderNumeric): Computation<SInt> {
         return builder.numeric().mult(left.build(builder), right.build(builder))
     }
 }
 
-class Divide(val left: IntExpression, val right: IntExpression) : IntExpression {
-    override fun build(builder: ProtocolBuilderNumeric): Computation<SInt> {
+class Divide(val left: IntExpression, val right: IntExpression) : Cached(), IntExpression {
+    override fun buildThis(builder: ProtocolBuilderNumeric): Computation<SInt> {
         return builder.advancedNumeric().div(left.build(builder), right.build(builder))
     }
 }
 
-class SquareRoot(val expr: IntExpression) : IntExpression {
-    override fun build(builder: ProtocolBuilderNumeric): Computation<SInt> {
+class SquareRoot(val expr: IntExpression) : Cached(), IntExpression {
+    override fun buildThis(builder: ProtocolBuilderNumeric): Computation<SInt> {
         return builder.advancedNumeric().sqrt(expr.build(builder),
                 builder.basicNumericFactory.maxBitLength)
     }
