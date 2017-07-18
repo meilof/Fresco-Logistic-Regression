@@ -43,4 +43,9 @@ class VectorSpec : Spek({
         expect(v1 * 2.0 is Vector).to.be.`true`
     }
 
+    it("can create a closed vector") {
+        val plainVector = plain.Vector(1.1, 2.2, 3.3)
+        val result = evaluate(closeVector(plainVector, 1))
+        expect(result.isCloseTo(plainVector, 0.01)).to.be.`true`
+    }
 })
