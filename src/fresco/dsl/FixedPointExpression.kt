@@ -23,7 +23,7 @@ interface FixedPointExpression : Expression {
     }
 
     operator fun div(other: FixedPointExpression): FixedPointExpression {
-        return FixedPoint((this.underlyingInt / other.underlyingInt) * knownMultiplier)
+        return FixedPoint(this.underlyingInt * knownMultiplier / other.underlyingInt)
     }
 }
 
