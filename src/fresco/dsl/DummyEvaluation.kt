@@ -86,7 +86,6 @@ private fun BigInteger.toSigned(): BigInteger {
     return actual
 }
 
-
 private class DummyApplication(val expression: Expression): Application<BigInteger, ProtocolBuilderNumeric.SequentialNumericBuilder> {
     override fun prepareApplication(builder: ProtocolBuilderNumeric.SequentialNumericBuilder): Computation<BigInteger> {
         val computation = expression.build(builder)
