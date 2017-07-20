@@ -104,17 +104,17 @@ class LogisticRegression {
         return beta + r
     }
 
-    fun fitLogisticModel(Xs: Array<plain.MatrixType>,
-                         Ys: Array<plain.Vector>,
+    fun fitLogisticModel(Xs: Array<MatrixType>,
+                         Ys: Array<Vector>,
                          lambda: Double = 0.0,
                          numberOfIterations: Int = 10): Vector {
         var H: MatrixType? = null
         for (party in 1 .. Xs.size) {
-            val localH = plain.LogisticRegression().hessian(Xs[party - 1])
+            val localH = hessian(Xs[party - 1])
             if (H == null) {
-                H = closeMatrix(localH, 1)
+                H = localH
             } else {
-                H += closeMatrix(localH, 1)
+                H += localH
             }
         }
 
@@ -124,24 +124,20 @@ class LogisticRegression {
 
         val I = IdentityMatrix(H.numberOfColumns)
         H -= lambda * I
-        var L: fresco.dsl.matrices.MatrixType = choleskyDecomposition(-1.0 * H)
-        val plainL = evaluate(L)
-        L = LowerTriangularMatrix(closeMatrix(plainL, 1))
+        val L = choleskyDecomposition(-1.0 * H)
 
         var beta = Vector(*DoubleArray(H.numberOfColumns, { 0.0 }))
         for (i in 0 until numberOfIterations) {
             println("${Date().time} ------- ITERATION: ${i} --------")
-            val openBeta = evaluate(beta)
-            beta = closeVector(openBeta, 1)
             var lprime: Vector? = null
             for (party in 1 .. Xs.size) {
                 val X = Xs[party - 1]
                 val Y = Ys[party - 1]
-                val localLPrime = plain.LogisticRegression().logLikelihoodPrime(X, Y, openBeta)
+                val localLPrime = logLikelihoodPrime(X, Y, beta)
                 if (lprime == null) {
-                    lprime = closeVector(localLPrime, 1)
+                    lprime = localLPrime
                 } else {
-                    lprime += closeVector(localLPrime, 1)
+                    lprime += localLPrime
                 }
             }
 
