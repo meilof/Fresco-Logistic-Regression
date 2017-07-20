@@ -82,9 +82,8 @@ class LogisticRegression {
         return Vector(*result)
     }
 
-    fun updateLearnedModel(H: MatrixType, beta: Vector, l: Vector):
+    fun updateLearnedModel(L: LowerTriangularMatrix, beta: Vector, l: Vector):
             Vector {
-        val L = choleskyDecomposition(-1.0 * H)
         val y = forwardSubstitution(L, l)
         val r = backSubstitution(L.transpose(), y)
         return beta + r
@@ -110,6 +109,8 @@ class LogisticRegression {
         val I = IdentityMatrix(H.numberOfColumns)
         H -= lambda * I
 
+        val L = choleskyDecomposition(-1.0 * H)
+
         var beta = Vector(*DoubleArray(H.numberOfColumns, { 0.0 }))
         for (i in 0 until numberOfIterations) {
             var lprime: Vector? = null
@@ -129,7 +130,7 @@ class LogisticRegression {
             }
 
             lprime -= (lambda * beta)
-            beta = updateLearnedModel(H, beta, lprime)
+            beta = updateLearnedModel(L, beta, lprime)
         }
         return beta
     }

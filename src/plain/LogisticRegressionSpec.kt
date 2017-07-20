@@ -100,10 +100,11 @@ class LogisticRegressionSpec: Spek({
                 arrayOf(3.0, 4.0)
         )
         val H = logistic.hessian(X)
+        val L = logistic.choleskyDecomposition(-1.0 * H)
         val l = Vector(7.0, 8.0)
         var beta = Vector(5.0, 6.0)
 
-        beta = logistic.updateLearnedModel(H, beta, l)
+        beta = logistic.updateLearnedModel(L, beta, l)
         
         val expected = Vector(33.0, -12.0)
         expect(beta.isCloseTo(expected, 0.00001)).to.be.`true`
