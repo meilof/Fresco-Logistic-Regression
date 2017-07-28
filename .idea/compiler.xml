@@ -6,18 +6,34 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="aes" />
+        <module name="aggregation" />
         <module name="core" />
+        <module name="demos-common" />
+        <module name="distance" />
+        <module name="fuelstation" />
+        <module name="psi" />
         <module name="spdz" />
+        <module name="sum" />
         <module name="tinytables" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="aes" target="1.8" />
+      <module name="aggregation" target="1.8" />
       <module name="core" target="1.8" />
       <module name="demo" target="1.8" />
+      <module name="demos" target="1.8" />
+      <module name="demos-common" target="1.8" />
+      <module name="distance" target="1.8" />
       <module name="fresco-protocol-suites-pom" target="1.8" />
+      <module name="fuelstation" target="1.8" />
       <module name="master-pom" target="1.8" />
+      <module name="psi" target="1.8" />
       <module name="spdz" target="1.8" />
+      <module name="sum" target="1.8" />
       <module name="tinytables" target="1.8" />
+      <module name="tools-master-pom" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

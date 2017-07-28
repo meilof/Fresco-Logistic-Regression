@@ -2,13 +2,21 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../fresco/demos/aes/aes.iml" filepath="$PROJECT_DIR$/../fresco/demos/aes/aes.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../fresco/demos/aggregation/aggregation.iml" filepath="$PROJECT_DIR$/../fresco/demos/aggregation/aggregation.iml" />
       <module fileurl="file://$PROJECT_DIR$/../fresco/core/core.iml" filepath="$PROJECT_DIR$/../fresco/core/core.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../fresco/demo/demo.iml" filepath="$PROJECT_DIR$/../fresco/demo/demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../fresco/demos/demos.iml" filepath="$PROJECT_DIR$/../fresco/demos/demos.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../fresco/demos/common/demos-common.iml" filepath="$PROJECT_DIR$/../fresco/demos/common/demos-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../fresco/demos/distance/distance.iml" filepath="$PROJECT_DIR$/../fresco/demos/distance/distance.iml" />
       <module fileurl="file://$PROJECT_DIR$/fresco-logistic-regression.iml" filepath="$PROJECT_DIR$/fresco-logistic-regression.iml" />
       <module fileurl="file://$PROJECT_DIR$/../fresco/suite/fresco-protocol-suites-pom.iml" filepath="$PROJECT_DIR$/../fresco/suite/fresco-protocol-suites-pom.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../fresco/tools/fuelstation/fuelstation.iml" filepath="$PROJECT_DIR$/../fresco/tools/fuelstation/fuelstation.iml" />
       <module fileurl="file://$PROJECT_DIR$/../fresco/master-pom.iml" filepath="$PROJECT_DIR$/../fresco/master-pom.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../fresco/demos/psi/psi.iml" filepath="$PROJECT_DIR$/../fresco/demos/psi/psi.iml" />
       <module fileurl="file://$PROJECT_DIR$/../fresco/suite/spdz/spdz.iml" filepath="$PROJECT_DIR$/../fresco/suite/spdz/spdz.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../fresco/demos/sum/sum.iml" filepath="$PROJECT_DIR$/../fresco/demos/sum/sum.iml" />
       <module fileurl="file://$PROJECT_DIR$/../fresco/suite/tinytables/tinytables.iml" filepath="$PROJECT_DIR$/../fresco/suite/tinytables/tinytables.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../fresco/tools/tools-master-pom.iml" filepath="$PROJECT_DIR$/../fresco/tools/tools-master-pom.iml" />
     </modules>
   </component>
 </project>

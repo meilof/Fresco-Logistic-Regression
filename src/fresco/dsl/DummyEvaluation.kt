@@ -1,18 +1,16 @@
 package fresco.dsl
 
-import dk.alexandra.fresco.framework.*
+import dk.alexandra.fresco.framework.Application
+import dk.alexandra.fresco.framework.BuilderFactory
+import dk.alexandra.fresco.framework.Computation
 import dk.alexandra.fresco.framework.builder.ProtocolBuilderNumeric
 import dk.alexandra.fresco.framework.configuration.NetworkConfiguration
 import dk.alexandra.fresco.framework.network.Network
-import dk.alexandra.fresco.framework.network.NetworkingStrategy
 import dk.alexandra.fresco.framework.network.SCENetwork
 import dk.alexandra.fresco.framework.network.serializers.BigIntegerSerializer
 import dk.alexandra.fresco.framework.sce.SCEFactory
-import dk.alexandra.fresco.framework.sce.configuration.ProtocolSuiteConfiguration
-import dk.alexandra.fresco.framework.sce.configuration.SCEConfiguration
 import dk.alexandra.fresco.framework.sce.evaluator.SequentialEvaluator
 import dk.alexandra.fresco.framework.sce.resources.ResourcePool
-import dk.alexandra.fresco.framework.sce.resources.storage.StreamedStorage
 import dk.alexandra.fresco.suite.ProtocolSuite
 import dk.alexandra.fresco.suite.dummy.arithmetic.DummyArithmeticBuilderFactory
 import dk.alexandra.fresco.suite.dummy.arithmetic.DummyArithmeticFactory
@@ -24,8 +22,6 @@ import java.security.SecureRandom
 import java.util.*
 import java.util.concurrent.LinkedTransferQueue
 import java.util.concurrent.TransferQueue
-import java.util.logging.Level
-import java.util.logging.Level.WARNING
 
 private val mod = BigInteger("6703903964971298549787012499123814115273848577471136527425966013026501536706464354255445443244279389455058889493431223951165286470575994074291745908195329")
 private val maxBitLength = 200
@@ -70,10 +66,9 @@ fun evaluate(expression: MatrixType): plain.MatrixType {
 }
 
 private fun evaluate(expression: Expression): BigInteger {
-    Reporter.setLevel(WARNING)
-    val configuration = DummySCEConfiguration()
-    val suite = DummyProtocolSuiteConfiguration()
-    val engine = SCEFactory.getSCEFromConfiguration(configuration, suite)
+    val suite = DummyProtocolSuite()
+    val evaluator = SequentialEvaluator<ResourcePool>()
+    val engine = SCEFactory.getSCEFromConfiguration(suite, evaluator)
     val result = engine.runApplication(DummyApplication(expression), DummyResourcePool())
     return result.toSigned()
 }
@@ -94,44 +89,11 @@ private class DummyApplication(val expression: Expression): Application<BigInteg
     }
 }
 
-
-private class DummySCEConfiguration: SCEConfiguration<ResourcePool> {
-    override fun getMyId(): Int {
-        return 1
-    }
-
-    override fun getParties(): MutableMap<Int, Party> {
-        return mutableMapOf(1 to Party(1, "localhost", 1234))
-    }
-
-    override fun getLogLevel(): Level {
-        return Level.OFF
-    }
-
-    override fun getNetworkStrategy(): NetworkingStrategy {
-        return NetworkingStrategy.SCAPI
-    }
-
-    override fun getEvaluator(): ProtocolEvaluator<ResourcePool> {
-        return SequentialEvaluator()
-    }
-
-    override fun getStreamedStorage(): StreamedStorage? {
-        return null
-    }
-}
-
-private class DummyProtocolSuiteConfiguration: ProtocolSuiteConfiguration<ResourcePool, ProtocolBuilderNumeric.SequentialNumericBuilder> {
-    override fun createProtocolSuite(myPlayerId: Int): ProtocolSuite<ResourcePool, ProtocolBuilderNumeric.SequentialNumericBuilder> {
-        return DummyProtocolSuite()
-    }
-
+private class DummyProtocolSuite : ProtocolSuite<ResourcePool, ProtocolBuilderNumeric.SequentialNumericBuilder> {
     override fun createResourcePool(myId: Int, size: Int, network: Network?, rand: Random?, secRand: SecureRandom?): ResourcePool {
         return DummyResourcePool()
     }
-}
 
-private class DummyProtocolSuite : ProtocolSuite<ResourcePool, ProtocolBuilderNumeric.SequentialNumericBuilder> {
     override fun init(resourcePool: ResourcePool?): BuilderFactory<ProtocolBuilderNumeric.SequentialNumericBuilder> {
         val arithmeticFactory = DummyArithmeticFactory(mod, maxBitLength)
         return DummyArithmeticBuilderFactory(arithmeticFactory)
