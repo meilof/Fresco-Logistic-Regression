@@ -1,0 +1,4 @@
+<configuration>
+    <!-- Disable Fresco logging while testing -->
+    <root level="OFF"/>
+</configuration>
