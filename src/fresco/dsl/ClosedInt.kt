@@ -10,6 +10,8 @@ class ClosedInt(val value: BigInteger, val inputParty: Int) : Cached(), IntExpre
             this(BigInteger.valueOf(value.toLong()), inputParty)
 
     override fun buildThis(builder: ProtocolBuilderNumeric): Computation<SInt> {
-        return builder.numeric().input(BigInteger.valueOf(value.toLong()), inputParty)
+        var bival = BigInteger.valueOf(value.toLong());
+        if (bival.signum() == -1) bival = bival + builder.basicNumericFactory.getModulus();
+        return builder.numeric().input(bival, inputParty)
     }
 }

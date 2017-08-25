@@ -26,7 +26,11 @@ fun sqrt(expr: IntExpression): IntExpression {
     return SquareRoot(expr)
 }
 
-private class Add(val left: IntExpression, val right: IntExpression) : Cached(), IntExpression {
+fun truncate(expr: IntExpression, bits: Int): IntExpression {
+    return Truncate(expr, bits)
+}
+
+class Add(val left: IntExpression, val right: IntExpression) : Cached(), IntExpression {
     override fun buildThis(builder: ProtocolBuilderNumeric): Computation<SInt> {
         return builder.numeric().add(left.build(builder), right.build(builder))
     }
@@ -56,3 +60,10 @@ class SquareRoot(val expr: IntExpression) : Cached(), IntExpression {
                 builder.basicNumericFactory.maxBitLength)
     }
 }
+
+class Truncate(val expr: IntExpression, val bits: Int) : Cached(), IntExpression {
+    override fun buildThis(builder: ProtocolBuilderNumeric): Computation<SInt> {
+        return builder.advancedNumeric().rightShift(expr.build(builder), bits)
+    }
+}
+

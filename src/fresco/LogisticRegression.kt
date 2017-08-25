@@ -1,11 +1,13 @@
 package fresco
 
-import fresco.dsl.FixedPointExpression
-import fresco.dsl.KnownFixedPoint
-import fresco.dsl.evaluate
+import dk.alexandra.fresco.framework.Computation
+import dk.alexandra.fresco.framework.builder.ProtocolBuilderNumeric
+import dk.alexandra.fresco.framework.value.SInt
+import fresco.dsl.*
 import fresco.dsl.matrices.*
 import fresco.dsl.matrices.Vector
-import fresco.dsl.sqrt
+import plain.LogisticRegression
+import java.lang.ref.WeakReference
 import java.util.*
 
 class LogisticRegression {
@@ -109,10 +111,13 @@ class LogisticRegression {
                          lambda: Double = 0.0,
                          numberOfIterations: Int = 10): Vector {
         var H: MatrixType? = null
+        var H0: MatrixType? = null
         for (party in 1 .. Xs.size) {
             val localH = plain.LogisticRegression().hessian(Xs[party - 1])
             if (H == null) {
+                println("Inputting " + localH)
                 H = closeMatrix(localH, 1)
+                H0 = H
             } else {
                 H += closeMatrix(localH, 1)
             }
@@ -125,7 +130,7 @@ class LogisticRegression {
         val I = IdentityMatrix(H.numberOfColumns)
         H -= lambda * I
         var L: fresco.dsl.matrices.MatrixType = choleskyDecomposition(-1.0 * H)
-        val plainL = evaluate(L)
+        val plainL = evaluate(H0!!)
         L = LowerTriangularMatrix(closeMatrix(plainL, 1))
 
         var beta = Vector(*DoubleArray(H.numberOfColumns, { 0.0 }))
@@ -155,4 +160,88 @@ class LogisticRegression {
         println("${Date().time} ------- DONE")
         return beta
     }
+
+    fun fitLogisticModelCoroutine(Xs: Array<plain.MatrixType>,
+                         Ys: Array<plain.Vector>,
+                         lambda: Double = 0.0,
+                         numberOfIterations: Int = 10) = generate<Any, Any> {
+
+        println("Starting logistic regression")
+
+        var H: MatrixType? = null
+        for (party in 1 .. Xs.size) {
+            val localH = LogisticRegression().hessian(Xs[party - 1])
+            if (H == null) {
+                H = closeMatrix(localH, 1)
+            } else {
+                H += closeMatrix(localH, 1)
+            }
+        }
+
+        if (H == null) {
+            throw IllegalArgumentException("input must not be empty")
+        }
+
+        val I = IdentityMatrix(H.numberOfColumns)
+        H -= lambda * I
+        var L: MatrixType = choleskyDecomposition(-1.0 * H)
+
+        //// TODO: should not actually be opened
+        //val plainL = yield(L) as plain.MatrixType
+        //L = LowerTriangularMatrix(closeMatrix(plainL, 1))
+
+        // TODO: this is slow
+        L = LowerTriangularMatrix(L)
+
+        //L = LowerTriangularMatrix(H)
+
+        var beta = Vector(*DoubleArray(H.numberOfColumns, { 0.0 }))
+        for (i in 0 until numberOfIterations) {
+            println("${Date().time} ------- ITERATION: ${i} --------")
+
+            val openBeta = yield(beta) as plain.Vector
+            //val openBeta = evaluate(beta)
+
+            beta = closeVector(openBeta, 1)
+            var lprime: Vector? = null
+            for (party in 1 .. Xs.size) {
+                val X = Xs[party - 1]
+                val Y = Ys[party - 1]
+                val localLPrime = LogisticRegression().logLikelihoodPrime(X, Y, openBeta)
+                if (lprime == null) {
+                    lprime = closeVector(localLPrime, 1)
+                } else {
+                    lprime += closeVector(localLPrime, 1)
+                }
+            }
+
+            if (lprime == null) {
+                throw IllegalArgumentException("does not happen")
+            }
+
+//            for (i in 0 until 3) {
+//                var fp = beta[i] as FixedPoint
+//                var lij = fp.underlyingInt as Cached
+//                println("Using beta[" + i  + "] " + beta[i] + " " + lij.latestValue)
+//
+//                for (j in 0 until 3) {
+//                        fp = L[i,j] as FixedPoint
+//                        lij = fp.underlyingInt as Cached
+//                        println("Using L[" + i + "," + j + "] " + L[i,j] + " " + lij.latestValue)
+//
+//                        fp = lprime[i,j] as FixedPoint
+//                        lij = fp.underlyingInt as Cached
+//                        println("Using lprint[" + i + "," + j + "] " + L[i,j] + " " + lij.latestValue)
+//                }
+//
+//            }
+
+            lprime -= (lambda * beta)
+            beta = updateLearnedModel(L, beta, lprime)
+        }
+        println("${Date().time} ------- DONE")
+
+        yield(beta)
+    }
+
 }

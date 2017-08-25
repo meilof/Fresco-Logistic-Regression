@@ -73,7 +73,7 @@ private fun evaluate(expression: Expression): BigInteger {
     return result.toSigned()
 }
 
-private fun BigInteger.toSigned(): BigInteger {
+public fun BigInteger.toSigned(): BigInteger {
     var actual = this.mod(mod)
     if (actual > mod.div(BigInteger.valueOf(2))) {
         actual = actual.subtract(mod)
@@ -81,7 +81,7 @@ private fun BigInteger.toSigned(): BigInteger {
     return actual
 }
 
-private class DummyApplication(val expression: Expression): Application<BigInteger, ProtocolBuilderNumeric.SequentialNumericBuilder> {
+class DummyApplication(val expression: Expression): Application<BigInteger, ProtocolBuilderNumeric.SequentialNumericBuilder> {
     override fun prepareApplication(builder: ProtocolBuilderNumeric.SequentialNumericBuilder): Computation<BigInteger> {
         val computation = expression.build(builder)
         val open = builder.numeric().open(computation)
@@ -89,7 +89,7 @@ private class DummyApplication(val expression: Expression): Application<BigInteg
     }
 }
 
-private class DummyProtocolSuite : ProtocolSuite<ResourcePool, ProtocolBuilderNumeric.SequentialNumericBuilder> {
+class DummyProtocolSuite : ProtocolSuite<ResourcePool, ProtocolBuilderNumeric.SequentialNumericBuilder> {
     override fun createResourcePool(myId: Int, size: Int, network: Network?, rand: Random?, secRand: SecureRandom?): ResourcePool {
         return DummyResourcePool()
     }
@@ -104,7 +104,7 @@ private class DummyProtocolSuite : ProtocolSuite<ResourcePool, ProtocolBuilderNu
     }
 }
 
-private class DummyRoundSynchronization: ProtocolSuite.RoundSynchronization<ResourcePool> {
+class DummyRoundSynchronization: ProtocolSuite.RoundSynchronization<ResourcePool> {
     override fun finishedBatch(gatesEvaluated: Int, resourcePool: ResourcePool?, sceNetwork: SCENetwork?) {
     }
 
@@ -112,7 +112,7 @@ private class DummyRoundSynchronization: ProtocolSuite.RoundSynchronization<Reso
     }
 }
 
-private class DummyResourcePool: DummyArithmeticResourcePool {
+class DummyResourcePool: DummyArithmeticResourcePool {
     override fun getModulus(): BigInteger {
         return mod
     }
@@ -142,7 +142,7 @@ private class DummyResourcePool: DummyArithmeticResourcePool {
     }
 }
 
-private class DummySerializer: BigIntegerSerializer {
+class DummySerializer: BigIntegerSerializer {
     override fun toBytes(bigInteger: BigInteger): ByteArray {
         return bigInteger.toByteArray()
     }
@@ -152,7 +152,7 @@ private class DummySerializer: BigIntegerSerializer {
     }
 }
 
-private class DummyNetwork : dk.alexandra.fresco.framework.network.Network {
+class DummyNetwork : dk.alexandra.fresco.framework.network.Network {
 
     private val queues = HashMap<Int, MutableMap<Int, TransferQueue<ByteArray>>>()
 

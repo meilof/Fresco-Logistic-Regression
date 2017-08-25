@@ -4,8 +4,11 @@ import java.math.BigInteger
 
 private typealias Bits = Int
 private val precision: Bits = 16
+private val precisionDiv2: Bits = 8
 private val multiplier = Math.pow(2.0, precision.toDouble())
+private val multiplierDiv2 = Math.pow(2.0, precisionDiv2.toDouble())
 private val knownMultiplier = KnownInt(multiplier.toInt())
+private val knownMultiplierDiv2 = KnownInt(multiplierDiv2.toInt())
 
 interface FixedPointExpression : Expression {
     val underlyingInt: IntExpression
@@ -19,7 +22,7 @@ interface FixedPointExpression : Expression {
     }
 
     operator fun times(other: FixedPointExpression): FixedPointExpression {
-        return FixedPoint((this.underlyingInt * other.underlyingInt) / knownMultiplier)
+        return FixedPoint(truncate(this.underlyingInt * other.underlyingInt, precision))
     }
 
     operator fun div(other: FixedPointExpression): FixedPointExpression {
@@ -28,6 +31,7 @@ interface FixedPointExpression : Expression {
 }
 
 fun sqrt(value: FixedPointExpression): FixedPointExpression {
+    //return FixedPoint(sqrt(value.underlyingInt * knownMultiplier))
     return FixedPoint(sqrt(value.underlyingInt * knownMultiplier))
 }
 
